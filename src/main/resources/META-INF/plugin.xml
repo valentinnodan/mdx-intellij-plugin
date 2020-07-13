@@ -1,13 +1,10 @@
 <idea-plugin>
-    <id>org.example.mdx-intellij-plugin</id>
+    <id>mdx.js</id>
     <name>MDX</name>
     <vendor>JetBrains</vendor>
 
     <description><![CDATA[
-    MDX is an authorable format that lets you seamlessly write
-    JSX in your Markdown documents.
-    You can import components, such as interactive charts or alerts, and embed them within your content.
-    This makes writing long-form content with components a blast [https://mdxjs.com/]
+    Plugin for MDX support in WebStorm/IDEA.
     ]]></description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
