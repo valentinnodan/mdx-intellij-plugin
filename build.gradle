@@ -8,9 +8,11 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven { url 'http://dl.bintray.com/jetbrains/markdown' }
 }
 
 dependencies {
+    compile "org.jetbrains:markdown:${markdownParserVersion}"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
@@ -18,5 +20,6 @@ dependencies {
 intellij {
     version = "IU-2020.1.2"
 }
+
 patchPluginXml {
 }

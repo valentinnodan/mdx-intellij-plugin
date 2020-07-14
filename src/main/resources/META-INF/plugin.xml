@@ -12,7 +12,8 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <fileType name="MDX File" implementationClass="org.intellij.plugin.mdx.lang.MDXFileType"
+                  fieldName="INSTANCE" language="MDX" extensions="mdx"/>
     </extensions>
 
     <actions>
