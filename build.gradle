@@ -9,6 +9,7 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
     maven { url 'http://dl.bintray.com/jetbrains/markdown' }
+    maven { url "https://www.jetbrains.com/intellij-repository/releases" }
 }
 
 dependencies {
@@ -19,6 +20,7 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version = "IU-2020.1.2"
+    plugins 'org.intellij.plugins.markdown:201.7223.85'
 }
 
 patchPluginXml {
