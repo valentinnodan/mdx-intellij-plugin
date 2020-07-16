@@ -2,11 +2,11 @@ package org.intellij.plugin.mdx.lang;
 
 import com.intellij.lang.Language;
 
-public class MDXLanguage extends Language {
+public class MdxLanguage extends Language {
     private static final String ID = "MDX";
-    public static final MDXLanguage INSTANCE = new MDXLanguage();
+    public static final MdxLanguage INSTANCE = new MdxLanguage();
 
-    private MDXLanguage() {
+    private MdxLanguage() {
         super(ID);
     }
 }

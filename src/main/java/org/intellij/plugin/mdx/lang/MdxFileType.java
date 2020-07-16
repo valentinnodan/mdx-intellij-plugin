@@ -9,13 +9,13 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class MDXFileType extends LanguageFileType{
-    public static final LanguageFileType INSTANCE = new MDXFileType();
+public class MdxFileType extends LanguageFileType{
+    public static final LanguageFileType INSTANCE = new MdxFileType();
     @NonNls
     public static final String DEFAULT_EXTENSION = "mdx";
 
-    private MDXFileType() {
-        super(MDXLanguage.INSTANCE);
+    private MdxFileType() {
+        super(MdxLanguage.INSTANCE);
     }
 
     @Override

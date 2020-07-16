@@ -13,8 +13,10 @@
     <depends>org.intellij.plugins.markdown</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileType name="MDX File" implementationClass="org.intellij.plugin.mdx.lang.MDXFileType"
+        <fileType name="MDX File" implementationClass="org.intellij.plugin.mdx.lang.MdxFileType"
                   fieldName="INSTANCE" language="MDX" extensions="mdx"/>
+        <lang.parserDefinition language="MDX"
+                               implementationClass="org.intellij.plugin.mdx.lang.psi.MdxParserDefinition"/>
     </extensions>
 
     <actions>
