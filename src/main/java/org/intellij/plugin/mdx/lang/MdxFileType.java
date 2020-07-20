@@ -1,6 +1,9 @@
 package org.intellij.plugin.mdx.lang;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
+import com.intellij.openapi.vfs.CharsetToolkit;
+import com.intellij.openapi.vfs.VirtualFile;
+import javassist.bytecode.ByteArray;
 import org.intellij.plugin.mdx.ide.MDXIcons;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
@@ -9,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class MdxFileType extends LanguageFileType{
+public class MdxFileType extends LanguageFileType {
     public static final LanguageFileType INSTANCE = new MdxFileType();
     @NonNls
     public static final String DEFAULT_EXTENSION = "mdx";
@@ -37,4 +40,10 @@ public class MdxFileType extends LanguageFileType{
     public @Nullable Icon getIcon() {
         return MDXIcons.FILE;
     }
+
+    @Override
+    public boolean isReadOnly() {
+        return false;
+    }
+
 }

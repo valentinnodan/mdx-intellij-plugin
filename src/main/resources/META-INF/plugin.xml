@@ -15,6 +15,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="MDX File" implementationClass="org.intellij.plugin.mdx.lang.MdxFileType"
                   fieldName="INSTANCE" language="MDX" extensions="mdx"/>
+        <lang.fileViewProviderFactory language="MDX" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxFileViewProviderFactory"/>
         <lang.parserDefinition language="MDX"
                                implementationClass="org.intellij.plugin.mdx.lang.psi.MdxParserDefinition"/>
     </extensions>
