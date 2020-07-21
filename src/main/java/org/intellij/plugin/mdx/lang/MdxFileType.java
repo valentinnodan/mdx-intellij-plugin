@@ -1,9 +1,6 @@
 package org.intellij.plugin.mdx.lang;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
-import com.intellij.openapi.vfs.CharsetToolkit;
-import com.intellij.openapi.vfs.VirtualFile;
-import javassist.bytecode.ByteArray;
 import org.intellij.plugin.mdx.ide.MDXIcons;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;

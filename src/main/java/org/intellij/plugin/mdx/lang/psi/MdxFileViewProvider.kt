@@ -15,6 +15,7 @@ import org.intellij.plugins.markdown.lang.MarkdownElementTypes
 import org.intellij.plugins.markdown.lang.MarkdownElementTypes.MARKDOWN_TEMPLATE_DATA
 import org.intellij.plugins.markdown.lang.MarkdownLanguage
 import org.intellij.plugins.markdown.lang.MarkdownTokenTypes
+import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
 import org.intellij.plugins.markdown.lang.psi.impl.MarkdownFile
 
 class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSystemEnabled: Boolean)
@@ -28,21 +29,17 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
     }
 
     override fun createFile(lang: Language): PsiFile? {
-        if (lang === MarkdownLanguage.INSTANCE) {
-            return MarkdownFile(this)
-        }
         if (lang === MdxLanguage.INSTANCE) {
-            return MdxFile(this)
+            return super.createFile(lang)?.apply {
+                putUserData(MarkdownParserManager.FLAVOUR_DESCRIPTION, MdxFlavourDescriptor)
+            }
         }
 
-//        val parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(lang) ?: return null
-
-        val parserDefinition = MdxParserDefinition()
+        val parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(lang) ?: return null
 
         val psiFile = parserDefinition.createFile(this)
         if (lang === templateDataLanguage && psiFile is PsiFileImpl) {
-            val MDX_TEMPLATE_DATA = TemplateDataElementType("MDX_TEMPLATE_DATA", MdxLanguage.INSTANCE, MarkdownTokenTypes.HTML_BLOCK_CONTENT, MarkdownElementTypes.MARKDOWN_OUTER_BLOCK)
-            psiFile.contentElementType = MDX_TEMPLATE_DATA
+            psiFile.contentElementType = MdxTemplate(lang)
         }
 
         return psiFile

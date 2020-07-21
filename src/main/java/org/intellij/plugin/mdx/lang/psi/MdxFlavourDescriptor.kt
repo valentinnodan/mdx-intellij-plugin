@@ -11,9 +11,7 @@ import org.intellij.markdown.flavours.gfm.table.GitHubTableMarkerProvider
 import org.intellij.markdown.html.GeneratingProvider
 import org.intellij.markdown.lexer.MarkdownLexer
 import org.intellij.markdown.parser.*
-import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
-import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.markerblocks.providers.*
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
@@ -39,7 +37,7 @@ object MdxFlavourDescriptor : CommonMarkFlavourDescriptor() {
 
 private object MdxProcessFactory : MarkerProcessorFactory {
     override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> {
-        return MdxMarkerProcessor(productionHolder, CommonMarkdownConstraints.Companion.BASE)
+        return MdxMarkerProcessor(productionHolder, MarkdownConstraints.Companion.BASE)
     }
 }
 
@@ -80,7 +78,7 @@ private class MdxMarkerProcessor(productionHolder: ProductionHolder,
             return
         }
 
-        val type = when (constraints.types.lastOrNull()) {
+        val type = when (constraints.getLastType()) {
             '>' ->
                 MarkdownTokenTypes.BLOCK_QUOTE
             '.', ')' ->
