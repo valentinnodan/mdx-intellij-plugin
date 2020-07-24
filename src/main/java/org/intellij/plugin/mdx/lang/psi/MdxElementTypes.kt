@@ -2,9 +2,9 @@ package org.intellij.plugin.mdx.lang.psi
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementType
-import org.intellij.plugins.markdown.lang.MarkdownElementTypes
+import org.intellij.plugin.mdx.lang.MdxLanguage
 
-class MdxElementTypes : MarkdownElementTypes {
+class MdxElementTypes {
     companion object {
         @JvmField val JSX_BLOCK: IElementType = MarkdownElementType("JSX_BLOCK")
     }

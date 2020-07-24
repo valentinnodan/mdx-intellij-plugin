@@ -3,20 +3,19 @@ package org.intellij.plugin.mdx.lang.psi
 
 import com.intellij.lang.Language
 import com.intellij.lang.LanguageParserDefinitions
-import com.intellij.lang.html.HTMLLanguage
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.psi.templateLanguages.TemplateDataElementType
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
+import com.intellij.psi.tree.IElementType
 import gnu.trove.THashSet
 import org.intellij.plugin.mdx.lang.MdxLanguage
+import org.intellij.plugins.markdown.lang.MarkdownElementType
 import org.intellij.plugins.markdown.lang.MarkdownElementTypes
-import org.intellij.plugins.markdown.lang.MarkdownElementTypes.MARKDOWN_TEMPLATE_DATA
 import org.intellij.plugins.markdown.lang.MarkdownLanguage
 import org.intellij.plugins.markdown.lang.MarkdownTokenTypes
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
-import org.intellij.plugins.markdown.lang.psi.impl.MarkdownFile
 
 class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSystemEnabled: Boolean)
     : MultiplePsiFilesPerDocumentFileViewProvider(manager, virtualFile, eventSystemEnabled), TemplateLanguageFileViewProvider {
@@ -39,7 +38,13 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
 
         val psiFile = parserDefinition.createFile(this)
         if (lang === templateDataLanguage && psiFile is PsiFileImpl) {
-            psiFile.contentElementType = MdxTemplate(lang)
+            val debugName = lang.displayName.toUpperCase().replace(' ', '_')
+            val mdxTemplate =
+                    TemplateDataElementType("MDX_TEMPLATE_${debugName}",
+                            MdxLanguage.INSTANCE,
+                            MarkdownElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT),
+                            IElementType("OUTER_BLOCK", MdxLanguage.INSTANCE))
+            psiFile.contentElementType = mdxTemplate
         }
 
         return psiFile
@@ -49,7 +54,7 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
 
     override fun getLanguages(): Set<Language> = myRelevantLanguages
 
-    override fun getTemplateDataLanguage(): Language = HTMLLanguage.INSTANCE
+    override fun getTemplateDataLanguage(): Language = com.intellij.lang.javascript.JavaScriptSupportLoader.JSX_HARMONY
 
     override fun cloneInner(fileCopy: VirtualFile): MultiplePsiFilesPerDocumentFileViewProvider =
             MdxFileViewProvider(manager, fileCopy, false)

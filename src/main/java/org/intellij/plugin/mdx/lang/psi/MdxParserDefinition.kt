@@ -1,8 +1,11 @@
 package org.intellij.plugin.mdx.lang.psi
 
+import com.intellij.lang.ASTNode
 import com.intellij.lang.PsiParser
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.project.Project
+import com.intellij.psi.FileViewProvider
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.stubs.PsiFileStub
 import com.intellij.psi.tree.IFileElementType
@@ -11,6 +14,8 @@ import org.intellij.plugin.mdx.lang.MdxLanguage
 import org.intellij.plugins.markdown.lang.lexer.MarkdownToplevelLexer
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserAdapter
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserDefinition
+import org.intellij.plugins.markdown.lang.stubs.MarkdownStubElementType
+
 
 class MdxParserDefinition : MarkdownParserDefinition() {
     override fun getFileNodeType(): IFileElementType {
@@ -18,23 +23,20 @@ class MdxParserDefinition : MarkdownParserDefinition() {
     }
 
     override fun createLexer(project: Project): Lexer {
-        return MarkdownToplevelLexer()
+        return MarkdownToplevelLexer(MdxFlavourDescriptor)
     }
 
     override fun createParser(project: Project): PsiParser {
         return MarkdownParserAdapter(MdxFlavourDescriptor)
     }
+
+    override fun createFile(viewProvider: FileViewProvider?): PsiFile {
+        return MdxFile(viewProvider)
+    }
+
+    override fun createElement(node: ASTNode): PsiElement {
+        val type = node.elementType
+        return if (type is MarkdownStubElementType<*, *>) type.createElement(node) else MdxPsiFactory.INSTANCE.createElement(node)
+    }
 }
-//java.lang.LinkageError: loader constraint violation: when
-//resolving method 'void org.intellij.markdown.parser.markerblocks.impl.HtmlBlockMarkerBlock.<init>
-//(org.intellij.markdown.parser.constraints.MarkdownConstraints, org.intellij.markdown.parser.ProductionHolder,
-//kotlin.text.Regex, org.intellij.markdown.parser.LookaheadText$Position)'
-//the class loader com.intellij.ide.plugins.cl.PluginClassLoader @ 148094e6 of the current class,
-//org/intellij/plugin/mdx/lang/psi/JsxBlockProvider, and the class loader com.intellij.ide.plugins.cl.PluginClassLoader @ 650745f4
-//for the method's defining class, org/intellij/markdown/parser/markerblocks/impl/HtmlBlockMarkerBlock,
-//have different Class objects for the type kotlin/text/Regex used in the signature (org.intellij.plugin.mdx.lang.psi.JsxBlockProvider
-//is in unnamed module of loader com.intellij.ide.plugins.cl.PluginClassLoader @148094e6, parent loader 'bootstrap';
-//org.intellij.markdown.parser.markerblocks.impl.HtmlBlockMarkerBlock is in unnamed module of
-//loader com.intellij.ide.plugins.cl.PluginClassLoader @650745f4, parent loader 'bootstrap')
-//at org.intellij.plugin.mdx.lang.psi.JsxBlockProvider.createMarkerBlocks(JsxBlockProvider.kt:16)
-//at org.intellij.markdown.parser.MarkerProcessor.createNewMarkerBlocks(MarkerProcessor.kt:
+

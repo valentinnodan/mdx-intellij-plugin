@@ -8,7 +8,7 @@ import org.intellij.plugin.mdx.lang.MdxLanguage;
 import org.jetbrains.annotations.NotNull;
 
 public class MdxFile extends PsiFileBase {
-    protected MdxFile(@NotNull FileViewProvider viewProvider) {
+    public MdxFile(FileViewProvider viewProvider) {
         super(viewProvider, MdxLanguage.INSTANCE);
     }
 

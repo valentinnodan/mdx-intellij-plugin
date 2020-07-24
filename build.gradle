@@ -13,8 +13,6 @@ repositories {
 }
 
 dependencies {
-//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-//    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
@@ -27,8 +25,8 @@ compileTestKotlin {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "LATEST-EAP-SNAPSHOT"
-    plugins "org.intellij.plugins.markdown:${markdownPluginVersion}"
+    version = "IU-LATEST-EAP-SNAPSHOT"
+    plugins = ['JavaScriptLanguage', "org.intellij.plugins.markdown:${markdownPluginVersion}"]
 }
 
 patchPluginXml {

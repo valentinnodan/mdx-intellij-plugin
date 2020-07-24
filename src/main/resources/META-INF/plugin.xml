@@ -11,6 +11,8 @@
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
     <depends>org.intellij.plugins.markdown</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="MDX File" implementationClass="org.intellij.plugin.mdx.lang.MdxFileType"

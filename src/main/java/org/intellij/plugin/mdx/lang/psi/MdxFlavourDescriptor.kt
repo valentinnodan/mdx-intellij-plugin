@@ -42,7 +42,7 @@ private object MdxProcessFactory : MarkerProcessorFactory {
 }
 
 private class MdxMarkerProcessor(productionHolder: ProductionHolder,
-                                       constraints: MarkdownConstraints) :
+                                 constraints: MarkdownConstraints) :
         CommonMarkMarkerProcessor(productionHolder, constraints) {
 
 
@@ -50,11 +50,11 @@ private class MdxMarkerProcessor(productionHolder: ProductionHolder,
             listOf(
                     CodeBlockProvider(),
                     HorizontalRuleProvider(),
-                    JsxBlockProvider(),
+                    CodeFenceProvider(),
                     SetextHeaderProvider(),
                     BlockQuoteProvider(),
                     ListMarkerProvider(),
-//                    HtmlBlockProvider(),
+                    JsxBlockProvider(),
                     GitHubTableMarkerProvider(),
                     AtxHeaderProvider(false),
                     CommentAwareLinkReferenceDefinitionProvider()
