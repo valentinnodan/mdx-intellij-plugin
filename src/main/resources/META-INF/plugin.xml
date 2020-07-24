@@ -20,6 +20,7 @@
         <lang.fileViewProviderFactory language="MDX" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxFileViewProviderFactory"/>
         <lang.parserDefinition language="MDX"
                                implementationClass="org.intellij.plugin.mdx.lang.psi.MdxParserDefinition"/>
+        <lang.syntaxHighlighter language="MDX" implementationClass="org.intellij.plugin.mdx.highlighting.MdxSyntaxHighlighter"/>
     </extensions>
 
     <actions>
