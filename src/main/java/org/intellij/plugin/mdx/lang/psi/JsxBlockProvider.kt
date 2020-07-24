@@ -74,7 +74,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val JSX_EXPORTS = "export const ${OBJECT_NAME} = .+"
 
-        val TAG_NAME = "[A-Z][a-zA-Z0-9-]*"
+        val TAG_NAME = "[a-zA-Z][a-zA-Z0-9-]*"
 
         val ATTR_NAME = "[A-Za-z:_][A-Za-z0-9_.:-]*"
 
@@ -98,8 +98,12 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val OPEN_CLOSE_REGEXES: List<Pair<Regex, Regex?>> = listOf(
                 Pair(Regex("<(?i:script|pre|style)(?: |>|$)"), Regex("</(?i:script|style|pre)>")),
+                Pair(Regex("<!--"), Regex("-->")),
+                Pair(Regex("<\\?"), Regex("\\?>")),
+                Pair(Regex("<![A-Z]"), Regex(">")),
+                Pair(Regex("<!\\[CDATA\\["), Regex("\\]\\]>")),
                 Pair(Regex("</?(?i:${TAG_NAMES.replace(", ", "|")})(?: |/?>|$)"), null),
-                Pair(Regex("(?:${OPEN_TAG}|${CLOSE_TAG})(?: |$)"), null)
+                Pair(Regex("(?:${OPEN_TAG}|${CLOSE_TAG})(?: *|$)"), null)
         )
 
         val FIND_START_REGEX = Regex(

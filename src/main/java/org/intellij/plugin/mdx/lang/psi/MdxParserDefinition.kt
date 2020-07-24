@@ -34,9 +34,5 @@ class MdxParserDefinition : MarkdownParserDefinition() {
         return MdxFile(viewProvider)
     }
 
-    override fun createElement(node: ASTNode): PsiElement {
-        val type = node.elementType
-        return if (type is MarkdownStubElementType<*, *>) type.createElement(node) else MdxPsiFactory.INSTANCE.createElement(node)
-    }
 }
 

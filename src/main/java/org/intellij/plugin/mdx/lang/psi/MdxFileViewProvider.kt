@@ -12,9 +12,6 @@ import com.intellij.psi.tree.IElementType
 import gnu.trove.THashSet
 import org.intellij.plugin.mdx.lang.MdxLanguage
 import org.intellij.plugins.markdown.lang.MarkdownElementType
-import org.intellij.plugins.markdown.lang.MarkdownElementTypes
-import org.intellij.plugins.markdown.lang.MarkdownLanguage
-import org.intellij.plugins.markdown.lang.MarkdownTokenTypes
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
 
 class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSystemEnabled: Boolean)
