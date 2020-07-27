@@ -1,4 +1,4 @@
-package org.intellij.plugin.mdx.lang.psi
+package org.intellij.plugin.mdx.lang.parse
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementType

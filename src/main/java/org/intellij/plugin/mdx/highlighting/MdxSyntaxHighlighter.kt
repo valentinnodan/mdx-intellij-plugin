@@ -1,7 +1,7 @@
 package org.intellij.plugin.mdx.highlighting
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
-import org.intellij.plugin.mdx.lang.psi.MdxTokenTypes
+import org.intellij.plugin.mdx.lang.parse.MdxTokenTypes
 import org.intellij.plugins.markdown.highlighting.MarkdownHighlighterColors
 import org.intellij.plugins.markdown.highlighting.MarkdownSyntaxHighlighter
 import org.intellij.plugins.markdown.lang.MarkdownElementType
