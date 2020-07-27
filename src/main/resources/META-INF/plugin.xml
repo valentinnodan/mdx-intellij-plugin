@@ -20,6 +20,7 @@
         <lang.fileViewProviderFactory language="MDX" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxFileViewProviderFactory"/>
         <lang.parserDefinition language="MDX"
                                implementationClass="org.intellij.plugin.mdx.lang.psi.MdxParserDefinition"/>
+        <outerLanguageRangePatcher language="JSX Harmony" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
     </extensions>
 
     <actions>

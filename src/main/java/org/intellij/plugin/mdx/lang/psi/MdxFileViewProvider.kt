@@ -11,11 +11,8 @@ import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
 import com.intellij.psi.tree.IElementType
 import gnu.trove.THashSet
 import org.intellij.plugin.mdx.lang.MdxLanguage
-import org.intellij.plugins.markdown.lang.MarkdownElementType
-import org.intellij.plugins.markdown.lang.MarkdownElementTypes
-import org.intellij.plugins.markdown.lang.MarkdownLanguage
-import org.intellij.plugins.markdown.lang.MarkdownTokenTypes
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
+
 
 class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSystemEnabled: Boolean)
     : MultiplePsiFilesPerDocumentFileViewProvider(manager, virtualFile, eventSystemEnabled), TemplateLanguageFileViewProvider {
@@ -40,14 +37,15 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
         if (lang === templateDataLanguage && psiFile is PsiFileImpl) {
             val debugName = lang.displayName.toUpperCase().replace(' ', '_')
             val mdxTemplate =
-                    TemplateDataElementType("MDX_TEMPLATE_${debugName}",
-                            MdxLanguage.INSTANCE,
-                            MarkdownElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT),
-                            IElementType("OUTER_BLOCK", MdxLanguage.INSTANCE))
+                    templateDataElementType(debugName)
             psiFile.contentElementType = mdxTemplate
         }
 
         return psiFile
+    }
+
+    private fun templateDataElementType(debugName: String): TemplateDataElementType {
+        return MdxTemplateDataElementType
     }
 
     override fun getBaseLanguage(): Language = MdxLanguage.INSTANCE
