@@ -10,6 +10,8 @@ import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.IStubFileElementType
 import org.intellij.plugin.mdx.lang.MdxLanguage
 import org.intellij.plugin.mdx.lang.psi.MdxFile
+import org.intellij.plugins.markdown.lang.lexer.MarkdownToplevelLexer
+import org.intellij.plugins.markdown.lang.parser.MarkdownParserAdapter
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserDefinition
 
 
@@ -19,11 +21,11 @@ class MdxParserDefinition : MarkdownParserDefinition() {
     }
 
     override fun createLexer(project: Project): Lexer {
-        return MdxLexer()
+        return MarkdownToplevelLexer(MdxFlavourDescriptor)
     }
 
     override fun createParser(project: Project): PsiParser {
-        return MdxParser()
+        return MarkdownParserAdapter(MdxFlavourDescriptor)
     }
 
     override fun createFile(viewProvider: FileViewProvider?): PsiFile {

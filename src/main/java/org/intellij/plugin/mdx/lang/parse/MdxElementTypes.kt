@@ -6,9 +6,6 @@ import org.intellij.markdown.MarkdownElementType
 class MdxElementTypes {
     companion object {
         @JvmField
-        val MDX_FILE: IElementType = MarkdownElementType("MDX_FILE")
-
-        @JvmField
         val JSX_BLOCK: IElementType = MarkdownElementType("JSX_BLOCK")
     }
 }
