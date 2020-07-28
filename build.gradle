@@ -26,7 +26,7 @@ compileTestKotlin {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version = "IU-LATEST-EAP-SNAPSHOT"
-    plugins = ['JavaScriptLanguage', "org.intellij.plugins.markdown:${markdownPluginVersion}"]
+    plugins = ['JavaScriptLanguage', "org.intellij.plugins.markdown:${markdownPluginVersion}", "platform-images"]
 }
 
 patchPluginXml {

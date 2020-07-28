@@ -8,13 +8,16 @@ import com.intellij.psi.*
 import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.psi.templateLanguages.TemplateDataElementType
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
-import com.intellij.psi.tree.IElementType
 import gnu.trove.THashSet
 import org.intellij.plugin.mdx.lang.MdxLanguage
 import org.intellij.plugin.mdx.lang.parse.MdxFlavourDescriptor
+<<<<<<< HEAD
 import org.intellij.plugin.mdx.lang.parse.MdxTokenTypes
 import org.intellij.plugins.markdown.lang.MarkdownElementType
+=======
+>>>>>>> d7099813e19fca5928e5e4f3fa8da4e22aa09b8d
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
+
 
 class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSystemEnabled: Boolean)
     : MultiplePsiFilesPerDocumentFileViewProvider(manager, virtualFile, eventSystemEnabled), TemplateLanguageFileViewProvider {
@@ -39,14 +42,15 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
         if (lang === templateDataLanguage && psiFile is PsiFileImpl) {
             val debugName = lang.displayName.toUpperCase().replace(' ', '_')
             val mdxTemplate =
-                    TemplateDataElementType("MDX_TEMPLATE_${debugName}",
-                            MdxLanguage.INSTANCE,
-                            MarkdownElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT),
-                            IElementType("OUTER_BLOCK", MdxLanguage.INSTANCE))
+                    templateDataElementType(debugName)
             psiFile.contentElementType = mdxTemplate
         }
 
         return psiFile
+    }
+
+    private fun templateDataElementType(debugName: String): TemplateDataElementType {
+        return MdxTemplateDataElementType
     }
 
     override fun getBaseLanguage(): Language = MdxLanguage.INSTANCE

@@ -20,8 +20,12 @@
         <lang.fileViewProviderFactory language="MDX" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxFileViewProviderFactory"/>
         <lang.parserDefinition language="MDX"
                                implementationClass="org.intellij.plugin.mdx.lang.parse.MdxParserDefinition"/>
+<<<<<<< HEAD
 
         <lang.syntaxHighlighter language="MDX" implementationClass="org.intellij.plugin.mdx.highlighting.MdxSyntaxHighlighter"/>
+=======
+        <outerLanguageRangePatcher language="JSX Harmony" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
+>>>>>>> d7099813e19fca5928e5e4f3fa8da4e22aa09b8d
     </extensions>
 
     <actions>
