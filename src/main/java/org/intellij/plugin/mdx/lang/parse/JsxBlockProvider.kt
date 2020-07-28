@@ -70,11 +70,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val OBJECTS_TO_IMPORT = "($OBJECT_TO_IMPORT,\\s*)*$OBJECT_TO_IMPORT"
 
-<<<<<<< HEAD:src/main/java/org/intellij/plugin/mdx/lang/parse/JsxBlockProvider.kt
         val JSX_IMPORTS = "import\\s+($OBJECTS_TO_IMPORT)\\s+from\\s+\\'\\@?$PATH_STRING\\';?"
-=======
-        val JSX_IMPORTS = "import\\s+($OBJECTS_TO_IMPORT)\\s+from\\s+\\'$PATH_STRING\\';?"
->>>>>>> d7099813e19fca5928e5e4f3fa8da4e22aa09b8d:src/main/java/org/intellij/plugin/mdx/lang/psi/JsxBlockProvider.kt
 
         val JSX_EXPORTS = "export const $OBJECT_NAME = .+"
 
@@ -107,11 +103,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
                 Pair(Regex("<![A-Z]"), Regex(">")),
                 Pair(Regex("<!\\[CDATA\\["), Regex("\\]\\]>")),
                 Pair(Regex("</?(?i:${TAG_NAMES.replace(", ", "|")})(?: |/?>|$)"), null),
-<<<<<<< HEAD:src/main/java/org/intellij/plugin/mdx/lang/parse/JsxBlockProvider.kt
                 Pair(Regex("(?:$OPEN_TAG|$CLOSE_TAG)(?: *|$)"), null)
-=======
-                Pair(Regex("(?:$OPEN_TAG|$CLOSE_TAG)(?: |$)"), null)
->>>>>>> d7099813e19fca5928e5e4f3fa8da4e22aa09b8d:src/main/java/org/intellij/plugin/mdx/lang/psi/JsxBlockProvider.kt
         )
 
         val FIND_START_REGEX = Regex(

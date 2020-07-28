@@ -11,11 +11,6 @@ import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
 import gnu.trove.THashSet
 import org.intellij.plugin.mdx.lang.MdxLanguage
 import org.intellij.plugin.mdx.lang.parse.MdxFlavourDescriptor
-<<<<<<< HEAD
-import org.intellij.plugin.mdx.lang.parse.MdxTokenTypes
-import org.intellij.plugins.markdown.lang.MarkdownElementType
-=======
->>>>>>> d7099813e19fca5928e5e4f3fa8da4e22aa09b8d
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
 
 
