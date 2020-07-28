@@ -7,7 +7,7 @@ import org.intellij.plugin.mdx.lang.MdxLanguage
 import org.intellij.plugin.mdx.lang.parse.MdxElementType
 import org.intellij.plugin.mdx.lang.parse.MdxTokenTypes
 
-class MdxTemplateDataElementType(debugName: String) : TemplateDataElementType(debugName,
+object MdxTemplateDataElementType : TemplateDataElementType("MDX_TEMPLATE_JSX",
         MdxLanguage,
         MdxElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT),
         IElementType("OUTER_BLOCK", MdxLanguage)) {

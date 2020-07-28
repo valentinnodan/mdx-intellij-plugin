@@ -34,17 +34,10 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
 
         val psiFile = parserDefinition.createFile(this)
         if (lang === templateDataLanguage && psiFile is PsiFileImpl) {
-            val debugName = lang.displayName.toUpperCase().replace(' ', '_')
-            val mdxTemplate =
-                    templateDataElementType(debugName)
-            psiFile.contentElementType = mdxTemplate
+            psiFile.contentElementType = MdxTemplateDataElementType
         }
 
         return psiFile
-    }
-
-    private fun templateDataElementType(debugName: String): TemplateDataElementType {
-        return MdxTemplateDataElementType(debugName)
     }
 
     override fun getBaseLanguage(): Language = MdxLanguage
