@@ -15,7 +15,7 @@ import org.intellij.plugins.markdown.lang.parser.MarkdownParserDefinition
 
 class MdxParserDefinition : MarkdownParserDefinition() {
     override fun getFileNodeType(): IFileElementType {
-        return IStubFileElementType<PsiFileStub<PsiFile>>("MDX", MdxLanguage.INSTANCE)
+        return IStubFileElementType<PsiFileStub<PsiFile>>("MDX", MdxLanguage)
     }
 
     override fun createLexer(project: Project): Lexer {

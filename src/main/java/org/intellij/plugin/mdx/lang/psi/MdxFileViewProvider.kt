@@ -24,7 +24,7 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
     }
 
     override fun createFile(lang: Language): PsiFile? {
-        if (lang === MdxLanguage.INSTANCE) {
+        if (lang === MdxLanguage) {
             return super.createFile(lang)?.apply {
                 putUserData(MarkdownParserManager.FLAVOUR_DESCRIPTION, MdxFlavourDescriptor)
             }
@@ -44,10 +44,10 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
     }
 
     private fun templateDataElementType(debugName: String): TemplateDataElementType {
-        return MdxTemplateDataElementType
+        return MdxTemplateDataElementType(debugName)
     }
 
-    override fun getBaseLanguage(): Language = MdxLanguage.INSTANCE
+    override fun getBaseLanguage(): Language = MdxLanguage
 
     override fun getLanguages(): Set<Language> = myRelevantLanguages
 

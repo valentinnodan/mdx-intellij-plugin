@@ -7,10 +7,10 @@ import org.intellij.plugin.mdx.lang.MdxLanguage
 import org.intellij.plugin.mdx.lang.parse.MdxElementType
 import org.intellij.plugin.mdx.lang.parse.MdxTokenTypes
 
-object MdxTemplateDataElementType : TemplateDataElementType("MDX_TEMPLATE_JSX",
-        MdxLanguage.INSTANCE,
+class MdxTemplateDataElementType(debugName: String) : TemplateDataElementType(debugName,
+        MdxLanguage,
         MdxElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT),
-        IElementType("OUTER_BLOCK", MdxLanguage.INSTANCE)) {
+        IElementType("OUTER_BLOCK", MdxLanguage)) {
 
     override fun getTemplateDataInsertionTokens(): TokenSet {
         return TokenSet.forAllMatching(IElementType.TRUE)

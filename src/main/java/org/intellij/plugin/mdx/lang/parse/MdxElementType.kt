@@ -10,9 +10,9 @@ import org.jetbrains.annotations.Nullable
 
 import java.util.*
 
-class MdxElementType(@NonNls debugName: String) : IElementType(debugName, MdxLanguage.INSTANCE) {
+class MdxElementType(@NonNls debugName: String) : IElementType(debugName, MdxLanguage) {
     companion object {
-        private val mdxToPlatformTypeMap: HashMap<org.intellij.markdown.IElementType, IElementType> = HashMap()
+        private val mdxToPlatformTypeMap: MutableMap<org.intellij.markdown.IElementType, IElementType> = HashMap()
 
         @Contract("null -> null; !null -> !null")
         @Synchronized

@@ -18,9 +18,9 @@ class MdxLexer : MarkdownToplevelLexer(MdxFlavourDescriptor) {
     private var myBufferStart = 0
     private var myBufferEnd = 0
 
-    private var myLexemes: ArrayList<IElementType>? = null
-    private var myStartOffsets: ArrayList<Int>? = null
-    private var myEndOffsets: ArrayList<Int>? = null
+    private var myLexemes: MutableList<IElementType>? = null
+    private var myStartOffsets: MutableList<Int>? = null
+    private var myEndOffsets: MutableList<Int>? = null
 
     private var myLexemeIndex = 0
     override fun start(buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int) {
