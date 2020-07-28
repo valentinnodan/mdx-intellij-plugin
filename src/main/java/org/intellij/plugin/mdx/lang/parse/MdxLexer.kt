@@ -7,6 +7,12 @@ import org.intellij.markdown.ast.visitors.RecursiveVisitor
 import org.intellij.plugins.markdown.lang.lexer.MarkdownToplevelLexer
 import java.util.*
 
+/**
+ * It is a copy-paste, only MarkdownParserManager changed on MdxParserManager
+ *
+ * @see org.intellij.plugins.markdown.lang.lexer.MarkdownToplevelLexer
+ */
+
 class MdxLexer : MarkdownToplevelLexer(MdxFlavourDescriptor) {
     private var myBuffer: CharSequence? = null
     private var myBufferStart = 0

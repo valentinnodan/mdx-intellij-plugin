@@ -8,9 +8,7 @@ class MdxParserManager : MarkdownParserManager() {
     companion object {
         fun parseContentMdx(@NotNull buffer: CharSequence): org.intellij.markdown.ast.ASTNode {
             val node = parseContent(buffer, MdxFlavourDescriptor)
-            // ?? the same constructor with node
-            val newASTNode = CompositeASTNode(MdxElementTypes.MDX_FILE, node.children)
-            return newASTNode;
+            return CompositeASTNode(MdxElementTypes.MDX_FILE, node.children)
         }
     }
 }

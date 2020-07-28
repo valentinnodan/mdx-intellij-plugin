@@ -10,6 +10,12 @@ import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import kotlin.text.Regex
 
+/**
+ * It is a copy-paste, only changed HTML to JSX
+ *
+ * @see org.intellij.markdown.parser.markerblocks.impl.HtmlBlockMarkerBlock
+ */
+
 class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
                            private val productionHolder: ProductionHolder,
                            private val endCheckingRegex: Regex?,

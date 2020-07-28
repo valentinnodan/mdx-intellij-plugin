@@ -1,7 +1,7 @@
 package org.intellij.plugin.mdx.lang.parse
 
 import com.intellij.psi.tree.IElementType
-import kotlin.jvm.Synchronized;
+import kotlin.jvm.Synchronized
 import org.intellij.plugin.mdx.lang.MdxLanguage
 import org.intellij.plugins.markdown.lang.MarkdownElementType
 import org.jetbrains.annotations.Contract
