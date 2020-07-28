@@ -1,4 +1,4 @@
-package org.intellij.plugin.mdx.lang.psi
+package org.intellij.plugin.mdx.lang.parse
 
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
@@ -30,7 +30,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         }
         val text = pos.currentLineFromPosition
         val offset = MarkerBlockProvider.passSmallIndent(text)
-        if (offset >= text.length){
+        if (offset >= text.length) {
             return -1
         }
         if (text[offset] != '<') {
@@ -66,13 +66,13 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val OBJECT_NAME = "[a-zA-Z][a-zA-Z0-9\\d]+"
 
-        val OBJECT_TO_IMPORT = "(${OBJECT_NAME})|(\\{(${OBJECT_NAME},\\s*)*${OBJECT_NAME}\\})"
+        val OBJECT_TO_IMPORT = "($OBJECT_NAME)|(\\{($OBJECT_NAME,\\s*)*$OBJECT_NAME\\})"
 
-        val OBJECTS_TO_IMPORT = "(${OBJECT_TO_IMPORT},\\s*)*${OBJECT_TO_IMPORT}"
+        val OBJECTS_TO_IMPORT = "($OBJECT_TO_IMPORT,\\s*)*$OBJECT_TO_IMPORT"
 
-        val JSX_IMPORTS = "import\\s+(${OBJECTS_TO_IMPORT})\\s+from\\s+\\'${PATH_STRING}\\';?"
+        val JSX_IMPORTS = "import\\s+($OBJECTS_TO_IMPORT)\\s+from\\s+\\'$PATH_STRING\\';?"
 
-        val JSX_EXPORTS = "export const ${OBJECT_NAME} = .+"
+        val JSX_EXPORTS = "export const $OBJECT_NAME = .+"
 
         val TAG_NAME = "[A-Z][a-zA-Z0-9-]*"
 
@@ -80,14 +80,14 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val ATTR_VALUE = "\\s*=\\s*(?:[^ \"'=<>`]+|'[^']*'|\"[^\"]*\")"
 
-        val ATTRIBUTE = "\\s+${ATTR_NAME}(?:${ATTR_VALUE})?"
+        val ATTRIBUTE = "\\s+$ATTR_NAME(?:$ATTR_VALUE)?"
 
-        val OPEN_TAG = "<${TAG_NAME}(?:${ATTRIBUTE})*\\s*/?>"
+        val OPEN_TAG = "<$TAG_NAME(?:$ATTRIBUTE)*\\s*/?>"
 
         /**
          * Closing tag allowance is not in public spec version yet
          */
-        val CLOSE_TAG = "</${TAG_NAME}\\s*>"
+        val CLOSE_TAG = "</$TAG_NAME\\s*>"
 
         /** see {@link http://spec.commonmark.org/0.21/#html-blocks}
          *
@@ -99,7 +99,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         val OPEN_CLOSE_REGEXES: List<Pair<Regex, Regex?>> = listOf(
                 Pair(Regex("<(?i:script|pre|style)(?: |>|$)"), Regex("</(?i:script|style|pre)>")),
                 Pair(Regex("</?(?i:${TAG_NAMES.replace(", ", "|")})(?: |/?>|$)"), null),
-                Pair(Regex("(?:${OPEN_TAG}|${CLOSE_TAG})(?: |$)"), null)
+                Pair(Regex("(?:$OPEN_TAG|$CLOSE_TAG)(?: |$)"), null)
         )
 
         val FIND_START_REGEX = Regex(

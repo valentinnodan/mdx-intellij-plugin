@@ -1,4 +1,4 @@
-package org.intellij.plugin.mdx.lang.psi
+package org.intellij.plugin.mdx.lang.parse
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
@@ -37,7 +37,7 @@ object MdxFlavourDescriptor : CommonMarkFlavourDescriptor() {
 
 private object MdxProcessFactory : MarkerProcessorFactory {
     override fun createMarkerProcessor(productionHolder: ProductionHolder): MarkerProcessor<*> {
-        return MdxMarkerProcessor(productionHolder, MarkdownConstraints.Companion.BASE)
+        return MdxMarkerProcessor(productionHolder, MarkdownConstraints.BASE)
     }
 }
 

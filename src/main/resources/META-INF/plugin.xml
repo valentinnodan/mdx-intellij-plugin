@@ -19,7 +19,7 @@
                   fieldName="INSTANCE" language="MDX" extensions="mdx"/>
         <lang.fileViewProviderFactory language="MDX" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxFileViewProviderFactory"/>
         <lang.parserDefinition language="MDX"
-                               implementationClass="org.intellij.plugin.mdx.lang.psi.MdxParserDefinition"/>
+                               implementationClass="org.intellij.plugin.mdx.lang.parse.MdxParserDefinition"/>
         <outerLanguageRangePatcher language="JSX Harmony" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
     </extensions>
 

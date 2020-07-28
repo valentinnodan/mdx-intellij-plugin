@@ -8,9 +8,9 @@ import com.intellij.psi.*
 import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.psi.templateLanguages.TemplateDataElementType
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
-import com.intellij.psi.tree.IElementType
 import gnu.trove.THashSet
 import org.intellij.plugin.mdx.lang.MdxLanguage
+import org.intellij.plugin.mdx.lang.parse.MdxFlavourDescriptor
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
 
 

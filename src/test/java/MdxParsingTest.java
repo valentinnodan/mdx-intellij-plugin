@@ -1,5 +1,5 @@
 import com.intellij.testFramework.ParsingTestCase;
-import org.intellij.plugin.mdx.lang.psi.MdxParserDefinition;
+import org.intellij.plugin.mdx.lang.parse.MdxParserDefinition;
 
 public class MdxParsingTest extends ParsingTestCase {
     public MdxParsingTest() {
