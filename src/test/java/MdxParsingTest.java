@@ -1,4 +1,3 @@
-
 import com.intellij.testFramework.ParsingTestCase;
 import org.intellij.plugin.mdx.lang.parse.MdxParserDefinition;
 

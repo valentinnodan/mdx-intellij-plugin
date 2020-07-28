@@ -29,4 +29,6 @@ class MdxParserDefinition : MarkdownParserDefinition() {
     override fun createFile(viewProvider: FileViewProvider?): PsiFile {
         return MdxFile(viewProvider)
     }
+
 }
+
