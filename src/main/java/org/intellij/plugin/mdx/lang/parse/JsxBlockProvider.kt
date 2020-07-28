@@ -94,7 +94,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
          * nulls mean "Next line should be blank"
          * */
 
-        val IMPORT_EXPORT_REGEX = Regex(JSX_IMPORTS)
+        val IMPORT_EXPORT_REGEX = Regex("($JSX_IMPORTS|$JSX_EXPORTS)")
 
         val OPEN_CLOSE_REGEXES: List<Pair<Regex, Regex?>> = listOf(
                 Pair(Regex("<(?i:script|pre|style)(?: |>|$)"), Regex("</(?i:script|style|pre)>")),

@@ -1,0 +1,5 @@
+<weak_warning descr="Expression statement is not assignment or call">
+    "<Button>\n" +
+    "Press the button" +
+    "</Button>"
+</weak_warning>
