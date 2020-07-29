@@ -15,12 +15,7 @@ import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
 class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSystemEnabled: Boolean)
     : MultiplePsiFilesPerDocumentFileViewProvider(manager, virtualFile, eventSystemEnabled), TemplateLanguageFileViewProvider {
 
-    private val myRelevantLanguages = THashSet<Language>()
-
-    init {
-        myRelevantLanguages.add(baseLanguage)
-        myRelevantLanguages.add(templateDataLanguage)
-    }
+    private val myRelevantLanguages = mutableSetOf(baseLanguage, templateDataLanguage)
 
     override fun createFile(lang: Language): PsiFile? {
         if (lang === MdxLanguage) {

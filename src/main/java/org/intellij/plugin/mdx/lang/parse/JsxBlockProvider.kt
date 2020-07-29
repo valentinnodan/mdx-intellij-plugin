@@ -70,6 +70,8 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val OBJECTS_TO_IMPORT = "($OBJECT_TO_IMPORT,\\s*)*$OBJECT_TO_IMPORT"
 
+        val FROM_KEYWORD = "(^|s+|\\})from($|s+|\\')"
+
         val JSX_IMPORTS = "import\\s+($OBJECTS_TO_IMPORT)\\s+from\\s+\\'$PATH_STRING\\';?"
 
         val JSX_EXPORTS = "export const $OBJECT_NAME = .+"

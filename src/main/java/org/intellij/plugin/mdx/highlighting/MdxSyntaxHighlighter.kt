@@ -10,21 +10,9 @@ import org.intellij.plugins.markdown.lang.lexer.MarkdownToplevelLexer
 
 
 class MdxSyntaxHighlighter : MarkdownSyntaxHighlighter() {
-    val myHighlightingLexer = MdxHighlightingLexer()
+    private val myHighlightingLexer = MdxHighlightingLexer()
 
     override fun getHighlightingLexer(): Lexer {
         return myHighlightingLexer
-    }
-    companion object {
-        init {
-            SyntaxHighlighterBase.safeMap(
-                    ATTRIBUTES,
-                    MarkdownElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT),
-                    MdxHighlighterColors.JSX_CODE_HIGHLIGHT)
-//            SyntaxHighlighterBase.safeMap(
-//                    ATTRIBUTES,
-//                    MarkdownElementType.platformType(MarkdownTokenTypes.HTML_TAG),
-//                    MdxHighlighterColors.TAG_HIGHLIGHT)
-        }
     }
 }

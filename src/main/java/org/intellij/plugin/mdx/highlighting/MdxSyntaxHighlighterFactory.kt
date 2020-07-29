@@ -7,7 +7,7 @@ import com.intellij.openapi.vfs.VirtualFile
 
 
 class MdxSyntaxHighlighterFactory : SyntaxHighlighterFactory() {
-    val mySyntaxHighlighter = MdxSyntaxHighlighter()
+    private val mySyntaxHighlighter = MdxSyntaxHighlighter()
 
     override fun getSyntaxHighlighter(project: Project?, virtualFile: VirtualFile?): SyntaxHighlighter {
         return mySyntaxHighlighter
