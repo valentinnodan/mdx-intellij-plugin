@@ -14,7 +14,7 @@ import org.intellij.plugin.mdx.lang.parse.MdxTokenTypes
 import org.intellij.plugins.markdown.lang.MarkdownElementType
 import org.intellij.plugins.markdown.lang.MarkdownTokenTypes
 
-class MdxTemplateHighlighter(project: Project?, virtualFile: VirtualFile?, colors: EditorColorsScheme)
+class MdxEditorHighlighter(colors: EditorColorsScheme)
     : LayeredLexerEditorHighlighter(MdxSyntaxHighlighter(), colors) {
     init {
         // create main highlighter

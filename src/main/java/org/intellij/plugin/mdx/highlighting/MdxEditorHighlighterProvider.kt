@@ -12,5 +12,5 @@ class MdxEditorHighlighterProvider : EditorHighlighterProvider {
     override fun getEditorHighlighter(project: Project?,
                                       fileType: FileType,
                                       virtualFile: VirtualFile?,
-                                      colors: EditorColorsScheme): EditorHighlighter = MdxTemplateHighlighter(project, virtualFile, colors)
+                                      colors: EditorColorsScheme): EditorHighlighter = MdxEditorHighlighter(colors)
 }

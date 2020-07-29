@@ -8,11 +8,11 @@ import javax.swing.Icon
 
 class MdxFileType private constructor() : LanguageFileType(MdxLanguage) {
     override fun getName(): String {
-        return "MDX File"
+        return "MDX"
     }
 
     override fun getDescription(): @Nls(capitalization = Nls.Capitalization.Sentence) String {
-        return "MDX file"
+        return "MDX"
     }
 
     override fun getDefaultExtension(): String {
