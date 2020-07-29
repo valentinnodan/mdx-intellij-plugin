@@ -5,7 +5,6 @@ import com.intellij.lang.LanguageParserDefinitions
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.PsiFileImpl
-import com.intellij.psi.templateLanguages.TemplateDataElementType
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
 import gnu.trove.THashSet
 import org.intellij.plugin.mdx.lang.MdxLanguage
