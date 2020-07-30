@@ -76,6 +76,7 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
             val nextLineOffset = pos.nextLineOrEofOffset
             realInterestingOffset = nextLineOffset
 
+
             val currentLine = pos.currentLine.subSequence(nextLineConstraints.getIndent(), pos.currentLine.length)
             if (endsThisBlock(currentLine)) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(pos.offset + 1..pos.nextLineOrEofOffset,
@@ -83,7 +84,12 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
                 scheduleProcessingResult(nextLineOffset, MarkerBlock.ProcessingResult.DEFAULT)
             } else {
                 val contentRange = Math.min(pos.offset + 1 + constraints.getIndent(), nextLineOffset)..nextLineOffset
+                val enterRange = pos.offset..nextLineOffset
                 if (contentRange.start < contentRange.endInclusive) {
+                    //
+                    productionHolder.addProduction(listOf(SequentialParser.Node(
+                            enterRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
+                    //
                     productionHolder.addProduction(listOf(SequentialParser.Node(
                             contentRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
                 }
