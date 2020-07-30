@@ -6,16 +6,21 @@ import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
-import kotlin.text.Regex
+import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 
 class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder, stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         val matchingGroup = matches(pos, stateInfo.currentConstraints)
         if (matchingGroup != -1) {
-            if (matchingGroup == IMPORT_EXPORT_INT_CONST) {
-                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, null, pos))
+            if (matchingGroup == IMPORT_EXPORT_ONE_LINE_CONST) {
+                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, null, pos, false))
             }
-            return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, OPEN_CLOSE_REGEXES[matchingGroup].second, pos))
+            if (matchingGroup == IMPORT_EXPORT_MULTILINE_CONST) {
+                productionHolder.addProduction(listOf(SequentialParser.Node(
+                        pos.offset..pos.nextLineOrEofOffset, MdxTokenTypes.JSX_BLOCK_CONTENT)))
+                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, END_REGEX, pos, true))
+            }
+            return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, OPEN_CLOSE_REGEXES[matchingGroup].second, pos, false))
         }
         return emptyList()
     }
@@ -35,8 +40,11 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         }
         if (text[offset] != '<') {
             if (IMPORT_EXPORT_REGEX.matches(text.substring(offset))) {
-                return IMPORT_EXPORT_INT_CONST
+                return IMPORT_EXPORT_ONE_LINE_CONST
             } else {
+                if (FIND_START_IMPORT_EXPORT.matches(text.substring(offset))) {
+                    return IMPORT_EXPORT_MULTILINE_CONST
+                }
                 return -1;
             }
         }
@@ -53,7 +61,9 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     }
 
     companion object {
-        val IMPORT_EXPORT_INT_CONST = 6;
+        val IMPORT_EXPORT_ONE_LINE_CONST = 6;
+
+        val IMPORT_EXPORT_MULTILINE_CONST = 7
 
         val TAG_NAMES =
                 "address, article, aside, base, basefont, blockquote, body, caption, center, col, colgroup, dd, details, " +
@@ -70,11 +80,13 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val OBJECTS_TO_IMPORT = "($OBJECT_TO_IMPORT,\\s*)*$OBJECT_TO_IMPORT"
 
-        val FROM_KEYWORD = "(^|s+|\\})from($|s+|\\')"
+        val IMPORT_KEYWORD = "(^|\\s+)import($|\\s+|\\{)"
+
+        val EXPORT_KEYWORD = "(^|\\s+)export($|\\s+)"
 
         val JSX_IMPORTS = "import\\s+($OBJECTS_TO_IMPORT)\\s+from\\s+\\'$PATH_STRING\\';?"
 
-        val JSX_EXPORTS = "export const $OBJECT_NAME = .+"
+//        val JSX_EXPORTS = "export const $OBJECT_NAME = .+"
 
         val TAG_NAME = "[A-Z][a-zA-Z0-9-]*"
 
@@ -96,17 +108,19 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
          * nulls mean "Next line should be blank"
          * */
 
-        val IMPORT_EXPORT_REGEX = Regex("($JSX_IMPORTS|$JSX_EXPORTS)")
-
+        val IMPORT_EXPORT_REGEX = Regex("($JSX_IMPORTS)")
         val OPEN_CLOSE_REGEXES: List<Pair<Regex, Regex?>> = listOf(
                 Pair(Regex("<(?i:script|pre|style)(?: |>|$)"), Regex("</(?i:script|style|pre)>")),
                 Pair(Regex("</?(?i:${TAG_NAMES.replace(", ", "|")})(?: |/?>|$)"), null),
                 Pair(Regex("(?:$OPEN_TAG|$CLOSE_TAG)(?: *|$)"), null)
         )
+        val FIND_START_IMPORT_EXPORT = Regex("($IMPORT_KEYWORD|$EXPORT_KEYWORD).*")
 
         val FIND_START_REGEX = Regex(
                 "\\A(${OPEN_CLOSE_REGEXES.joinToString(separator = "|", transform = { "(${it.first.pattern})" })})"
         )
+
+        val END_REGEX = Regex("($IMPORT_KEYWORD|\\n|${FIND_START_REGEX.pattern})")
 
     }
 }

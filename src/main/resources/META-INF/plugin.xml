@@ -21,7 +21,7 @@
         <lang.parserDefinition language="MDX"
                                implementationClass="org.intellij.plugin.mdx.lang.parse.MdxParserDefinition"/>
 
-        <editorHighlighterProvider filetype="MDX File" implementationClass="org.intellij.plugin.mdx.highlighting.MdxEditorHighlighterProvider"/>
+        <editorHighlighterProvider filetype="MDX" implementationClass="org.intellij.plugin.mdx.highlighting.MdxEditorHighlighterProvider"/>
         <colorSettingsPage implementation="org.intellij.plugin.mdx.highlighting.MdxColorSettingsPage"/>
         <outerLanguageRangePatcher language="JSX Harmony" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
 
