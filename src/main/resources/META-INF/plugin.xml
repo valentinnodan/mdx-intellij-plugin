@@ -15,7 +15,7 @@
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileType name="MDX File" implementationClass="org.intellij.plugin.mdx.lang.MdxFileType"
+        <fileType name="MDX" implementationClass="org.intellij.plugin.mdx.lang.MdxFileType"
                   fieldName="INSTANCE" language="MDX" extensions="mdx"/>
         <lang.fileViewProviderFactory language="MDX" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxFileViewProviderFactory"/>
         <lang.parserDefinition language="MDX"
@@ -25,6 +25,7 @@
         <colorSettingsPage implementation="org.intellij.plugin.mdx.highlighting.MdxColorSettingsPage"/>
         <outerLanguageRangePatcher language="JSX Harmony" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
 
+        <xml.xmlSuppressionProvider implementation="com.intellij.lang.javascript.frameworks.react.JSXInspectionFilter"/>
     </extensions>
 
     <actions>
