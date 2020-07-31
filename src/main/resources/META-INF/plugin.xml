@@ -10,9 +10,26 @@
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>org.intellij.plugins.markdown</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <fileType name="MDX" implementationClass="org.intellij.plugin.mdx.lang.MdxFileType"
+                  fieldName="INSTANCE" language="MDX" extensions="mdx"/>
+        <lang.fileViewProviderFactory language="MDX"
+                                      implementationClass="org.intellij.plugin.mdx.lang.psi.MdxFileViewProviderFactory"/>
+        <lang.parserDefinition language="MDX"
+                               implementationClass="org.intellij.plugin.mdx.lang.parse.MdxParserDefinition"/>
+
+        <editorHighlighterProvider filetype="MDX"
+                                   implementationClass="org.intellij.plugin.mdx.highlighting.MdxEditorHighlighterProvider"/>
+        <colorSettingsPage implementation="org.intellij.plugin.mdx.highlighting.MdxColorSettingsPage"/>
+        <outerLanguageRangePatcher language="JSX Harmony"
+                                   implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
+        <lang.inspectionSuppressor language="MDX"
+                                   implementationClass="org.intellij.plugin.mdx.codeInspection.MdxInspectionSuppressor"/>
+        <!--        <xml.xmlSuppressionProvider implementation="com.intellij.lang.javascript.frameworks.react.JSXInspectionFilter"/>-->
     </extensions>
 
     <actions>

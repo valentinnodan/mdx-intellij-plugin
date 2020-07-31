@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.4.21'
+    id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
 }
 
 group 'com.jetbrains.webstorm'
@@ -8,15 +9,25 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven { url "https://www.jetbrains.com/intellij-repository/releases" }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "IU-2020.1.2"
+    version = "IU-LATEST-EAP-SNAPSHOT"
+    plugins = ['JavaScriptLanguage', "org.intellij.plugins.markdown:${markdownPluginVersion}", "platform-images"]
 }
+
 patchPluginXml {
 }
