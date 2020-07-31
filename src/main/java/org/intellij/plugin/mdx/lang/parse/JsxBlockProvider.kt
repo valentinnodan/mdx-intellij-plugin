@@ -15,9 +15,12 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
             if (matchingGroup == IMPORT_EXPORT_CONST) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(
                         pos.offset..pos.nextLineOrEofOffset, MdxTokenTypes.JSX_BLOCK_CONTENT)))
-                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, END_REGEX, pos, true))
+                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, END_REGEX, pos, true, false))
             }
-            return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, OPEN_CLOSE_REGEXES[matchingGroup].second, pos, false))
+            if (matchingGroup == OPEN_CLOSE_REGEXES.indexOf(MULTILINE_TAG_REGEX_PAIR)) {
+                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, OPEN_CLOSE_REGEXES[matchingGroup].second, pos, false, false))
+            }
+            return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, OPEN_CLOSE_REGEXES[matchingGroup].second, pos, false, false))
         }
         return emptyList()
     }
@@ -87,10 +90,15 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
          * nulls mean "Next line should be blank"
          * */
 
+        val END_TAG_REGEX = Regex("(^|[^<]*)>")
+
+        val MULTILINE_TAG_REGEX_PAIR = Pair(Regex("<$TAG_NAME.*"), END_TAG_REGEX)
+
         val OPEN_CLOSE_REGEXES: List<Pair<Regex, Regex?>> = listOf(
                 Pair(Regex("<(?i:script|pre|style)(?: |>|$)"), Regex("</(?i:script|style|pre)>")),
                 Pair(Regex("</?(?i:${TAG_NAMES.replace(", ", "|")})(?: |/?>|$)"), null),
-                Pair(Regex("(?:$OPEN_TAG|$CLOSE_TAG)(?: *|$)"), null)
+                Pair(Regex("(?:$OPEN_TAG|$CLOSE_TAG)(?: *|$)"), null),
+                MULTILINE_TAG_REGEX_PAIR
         )
         val FIND_START_IMPORT_EXPORT = Regex("($IMPORT_KEYWORD|$EXPORT_KEYWORD).*")
 
