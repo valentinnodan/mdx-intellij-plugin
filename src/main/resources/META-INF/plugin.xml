@@ -17,15 +17,19 @@
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="MDX" implementationClass="org.intellij.plugin.mdx.lang.MdxFileType"
                   fieldName="INSTANCE" language="MDX" extensions="mdx"/>
-        <lang.fileViewProviderFactory language="MDX" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxFileViewProviderFactory"/>
+        <lang.fileViewProviderFactory language="MDX"
+                                      implementationClass="org.intellij.plugin.mdx.lang.psi.MdxFileViewProviderFactory"/>
         <lang.parserDefinition language="MDX"
                                implementationClass="org.intellij.plugin.mdx.lang.parse.MdxParserDefinition"/>
 
-        <editorHighlighterProvider filetype="MDX" implementationClass="org.intellij.plugin.mdx.highlighting.MdxEditorHighlighterProvider"/>
+        <editorHighlighterProvider filetype="MDX"
+                                   implementationClass="org.intellij.plugin.mdx.highlighting.MdxEditorHighlighterProvider"/>
         <colorSettingsPage implementation="org.intellij.plugin.mdx.highlighting.MdxColorSettingsPage"/>
-        <outerLanguageRangePatcher language="JSX Harmony" implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
-
-        <xml.xmlSuppressionProvider implementation="com.intellij.lang.javascript.frameworks.react.JSXInspectionFilter"/>
+        <outerLanguageRangePatcher language="JSX Harmony"
+                                   implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
+        <lang.inspectionSuppressor language="MDX"
+                                   implementationClass="org.intellij.plugin.mdx.codeInspection.MdxInspectionSuppressor"/>
+        <!--        <xml.xmlSuppressionProvider implementation="com.intellij.lang.javascript.frameworks.react.JSXInspectionFilter"/>-->
     </extensions>
 
     <actions>

@@ -98,7 +98,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
                 "\\A(${OPEN_CLOSE_REGEXES.joinToString(separator = "|", transform = { "(${it.first.pattern})" })})"
         )
 
-        val END_REGEX = Regex("($IMPORT_KEYWORD|$EXPORT_KEYWORD|(^$)|${FIND_START_REGEX.pattern})")
+        val END_REGEX = Regex("(($IMPORT_KEYWORD)|($EXPORT_KEYWORD)|(^$)|(${FIND_START_REGEX.pattern}))")
 
     }
 }
