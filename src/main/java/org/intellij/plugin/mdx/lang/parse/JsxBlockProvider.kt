@@ -7,6 +7,7 @@ import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import java.util.*
 
 class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder, stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
@@ -15,12 +16,15 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
             if (matchingGroup == IMPORT_EXPORT_CONST) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(
                         pos.offset..pos.nextLineOrEofOffset, MdxTokenTypes.JSX_BLOCK_CONTENT)))
-                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, END_REGEX, pos, true, false))
+                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, END_REGEX, true, null))
             }
-            if (matchingGroup == OPEN_CLOSE_REGEXES.indexOf(MULTILINE_TAG_REGEX_PAIR)) {
-                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, OPEN_CLOSE_REGEXES[matchingGroup].second, pos, false, false))
+            val myStack: Stack<CharSequence> = Stack()
+            JsxBlockUtil.parseParenthesis(pos, myStack, productionHolder, MarkdownConstraints.BASE, false)
+            if (INLINE_REGEX.find(pos.currentLineFromPosition) == null) {
+                productionHolder.addProduction(listOf(SequentialParser.Node(
+                        pos.offset..pos.nextLineOrEofOffset, MdxTokenTypes.JSX_BLOCK_CONTENT)))
             }
-            return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, OPEN_CLOSE_REGEXES[matchingGroup].second, pos, false, false))
+            return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, OPEN_CLOSE_REGEXES[matchingGroup].second, false, myStack))
         }
         return emptyList()
     }
@@ -38,6 +42,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         if (offset >= text.length) {
             return -1
         }
+
         if (text[offset] != '<') {
             if (FIND_START_IMPORT_EXPORT.matches(text.substring(offset))) {
                 return IMPORT_EXPORT_CONST
@@ -55,6 +60,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         assert(false) { "Match found but all groups are empty!" }
         return -1
     }
+
 
     companion object {
         val IMPORT_EXPORT_CONST = 6
@@ -78,12 +84,22 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val ATTRIBUTE = "\\s+$ATTR_NAME(?:$ATTR_VALUE)?"
 
-        val OPEN_TAG = "<$TAG_NAME(?:$ATTRIBUTE)*\\s*/?>"
+        val OPEN_TAG = "<$TAG_NAME(?:$ATTRIBUTE)*\\s*>"
+
+        val EMPTY_TAG = "<$TAG_NAME(?:$ATTRIBUTE)*\\s*/>"
 
         /**
          * Closing tag allowance is not in public spec version yet
          */
         val CLOSE_TAG = "</$TAG_NAME\\s*>"
+
+        val TAG_REGEX = Regex("$OPEN_TAG|$CLOSE_TAG|$EMPTY_TAG|<$TAG_NAME[^>]*")
+
+        val OPEN_TAG_REGEX = Regex("$OPEN_TAG|<$TAG_NAME[^>]*$")
+
+        val CLOSE_TAG_REGEX = Regex(CLOSE_TAG)
+
+//        val EMPTY_TAG_REGEX = Regex(EMPTY_TAG)
 
         /** see {@link http://spec.commonmark.org/0.21/#html-blocks}
          *
@@ -97,7 +113,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         val OPEN_CLOSE_REGEXES: List<Pair<Regex, Regex?>> = listOf(
                 Pair(Regex("<(?i:script|pre|style)(?: |>|$)"), Regex("</(?i:script|style|pre)>")),
                 Pair(Regex("</?(?i:${TAG_NAMES.replace(", ", "|")})(?: |/?>|$)"), null),
-                Pair(Regex("(?:$OPEN_TAG|$CLOSE_TAG)(?: *|$)"), null),
+                Pair(Regex("(?:$OPEN_TAG|$CLOSE_TAG|$EMPTY_TAG)(?: *|$)"), null),
                 MULTILINE_TAG_REGEX_PAIR
         )
         val FIND_START_IMPORT_EXPORT = Regex("($IMPORT_KEYWORD|$EXPORT_KEYWORD).*")
@@ -108,5 +124,6 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val END_REGEX = Regex("(($IMPORT_KEYWORD)|($EXPORT_KEYWORD)|(^$)|(${FIND_START_REGEX.pattern}))")
 
+        val INLINE_REGEX = Regex("\\s*($CLOSE_TAG|$EMPTY_TAG).+")
     }
 }
