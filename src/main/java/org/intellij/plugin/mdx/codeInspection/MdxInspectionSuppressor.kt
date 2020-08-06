@@ -11,7 +11,7 @@ class MdxInspectionSuppressor : InspectionSuppressor {
     }
 
     override fun isSuppressedFor(element: PsiElement, name: String): Boolean {
-        if (element is MdxFile && name == "JSXNamespaceValidation") {
+        if (element is MdxFile && (name == "JSXNamespaceValidation" || name == "BadExpressionStatementJS")) {
             return true
         }
         return false

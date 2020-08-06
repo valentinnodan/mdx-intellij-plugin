@@ -41,7 +41,7 @@ object JsxBlockUtil {
                     }
                 }
                 productionHolder.addProduction(listOf(SequentialParser.Node(
-                        groups[nextGroupInd].second.first + delta .. groups[nextGroupInd].second.last + 1 + delta, MdxTokenTypes.JSX_BLOCK_CONTENT)))
+                        groups[nextGroupInd].second.first + delta..groups[nextGroupInd].second.last + 1 + delta, MdxTokenTypes.JSX_BLOCK_CONTENT)))
                 myPos = groups[nextGroupInd].second.last + 1
                 nextGroupInd++
             } else {
@@ -50,7 +50,7 @@ object JsxBlockUtil {
                 } else {
                     text.length
                 }
-                val myRange = myPos + delta .. rangeEnd + delta
+                val myRange = myPos + delta..rangeEnd + delta
                 if (tagStack.size == 0 || tagStack.peek().matches(JsxBlockProvider.CLOSE_TAG_REGEX)) {
                     productionHolder.addProduction(listOf(SequentialParser.Node(
                             myRange, MarkdownTokenTypes.TEXT)))

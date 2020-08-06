@@ -99,7 +99,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val CLOSE_TAG_REGEX = Regex(CLOSE_TAG)
 
-//        val EMPTY_TAG_REGEX = Regex(EMPTY_TAG)
+        val EMPTY_TAG_REGEX = Regex(EMPTY_TAG)
 
         /** see {@link http://spec.commonmark.org/0.21/#html-blocks}
          *

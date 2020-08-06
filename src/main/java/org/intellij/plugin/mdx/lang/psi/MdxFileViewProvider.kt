@@ -7,6 +7,7 @@ import com.intellij.psi.*
 import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
 import gnu.trove.THashSet
+import org.intellij.plugin.mdx.js.MdxJSLanguage
 import org.intellij.plugin.mdx.lang.MdxLanguage
 import org.intellij.plugin.mdx.lang.parse.MdxFlavourDescriptor
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
@@ -38,7 +39,8 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
 
     override fun getLanguages(): Set<Language> = myRelevantLanguages
 
-    override fun getTemplateDataLanguage(): Language = com.intellij.lang.javascript.JavaScriptSupportLoader.JSX_HARMONY
+    override fun getTemplateDataLanguage(): Language = MdxJSLanguage.INSTANCE
+
 
     override fun cloneInner(fileCopy: VirtualFile): MultiplePsiFilesPerDocumentFileViewProvider =
             MdxFileViewProvider(manager, fileCopy, false)
