@@ -1,9 +1,11 @@
 package org.intellij.plugin.mdx.js
 
+import com.intellij.javascript.JSModuleBaseReference
 import com.intellij.lang.javascript.DialectDetector
 import com.intellij.lang.javascript.frameworks.amd.JSModuleReference
 import com.intellij.lang.javascript.frameworks.modules.JSBaseModuleReferenceContributor
 import com.intellij.lang.javascript.frameworks.modules.JSModuleFileReferenceSet
+import com.intellij.lang.javascript.frameworks.modules.JSModuleReferenceBase
 import com.intellij.lang.javascript.psi.resolve.JSModuleReferenceContributor
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.text.StringUtil
@@ -60,15 +62,20 @@ class MdxModuleReferenceContributor : JSBaseModuleReferenceContributor() {
                         val result = super.innerResolve(caseSensitive, containingFile)
                         (result.indices).forEach { i ->
                             if (result[i].element is MdxFile) {
-                                result[i] = PsiElementResolveResult((result[i].element as MdxFile).viewProvider.getPsi(MdxJSLanguage.INSTANCE).originalFile.originalElement)
+                                result[i] = PsiElementResolveResult((result[i].element as MdxFile).viewProvider.getPsi(MdxJSLanguage.INSTANCE))
                             }
                         }
                         return result
 
                     }
                 }
+
             }
         }.allReferences
     }
 
+
+    override fun getDefaultWeight(): Int {
+        return JSModuleBaseReference.ModuleTypes.DEFAULT.weight().inc()
+    }
 }
