@@ -15,6 +15,7 @@ class MdxFileType private constructor() : LanguageFileType(MdxLanguage) {
         return "MDX"
     }
 
+
     override fun getDefaultExtension(): String {
         return DEFAULT_EXTENSION
     }

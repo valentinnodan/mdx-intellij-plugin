@@ -31,7 +31,10 @@
                                    implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
         <lang.inspectionSuppressor language="MDX"
                                    implementationClass="org.intellij.plugin.mdx.codeInspection.MdxInspectionSuppressor"/>
-        <!--        <xml.xmlSuppressionProvider implementation="com.intellij.lang.javascript.frameworks.react.JSXInspectionFilter"/>-->
+    </extensions>
+
+    <extensions defaultExtensionNs="JavaScript">
+        <moduleReferenceContributor implementation="org.intellij.plugin.mdx.js.MdxModuleReferenceContributor"/>
     </extensions>
 
     <actions>
