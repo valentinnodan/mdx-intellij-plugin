@@ -1,15 +1,15 @@
 package org.intellij.plugin.mdx.js
 
-import com.intellij.javascript.JSModuleBaseReference
 import com.intellij.lang.javascript.DialectDetector
 import com.intellij.lang.javascript.frameworks.amd.JSModuleReference
 import com.intellij.lang.javascript.frameworks.modules.JSBaseModuleReferenceContributor
 import com.intellij.lang.javascript.frameworks.modules.JSModuleFileReferenceSet
 import com.intellij.lang.javascript.psi.resolve.JSModuleReferenceContributor
-import com.intellij.openapi.util.RecursionManager
 import com.intellij.openapi.util.TextRange
+import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import org.intellij.plugin.mdx.lang.psi.MdxFile
 import org.jetbrains.annotations.NotNull
 import java.util.*
 
@@ -24,7 +24,7 @@ class MdxModuleReferenceContributor : JSBaseModuleReferenceContributor() {
                                offset: Int,
                                provider: PsiReferenceProvider?,
                                isCommonJS: Boolean): Array<out @NotNull FileReference> {
-        if (!Regex(".*\\.mdx$").matches(unquotedRefText)) {
+        if (!StringUtil.endsWith(unquotedRefText, ".mdx")) {
             return emptyArray()
         }
         val path = JSModuleReferenceContributor.getActualPath(unquotedRefText)
@@ -44,39 +44,26 @@ class MdxModuleReferenceContributor : JSBaseModuleReferenceContributor() {
                                 templateName: String?): Array<out @NotNull FileReference> {
 
         return object : JSModuleFileReferenceSet(modulePath, host, index, provider, templateName) {
+
+
             override fun isSoft(): Boolean {
                 return isSoft
             }
 
             override fun createFileReference(textRange: TextRange?, i: Int, text: String?): FileReference? {
-                if (!Regex(".*$text$").matches(modulePath) || !Regex(".*\\.mdx$").matches(text!!)) {
+                if (!StringUtil.endsWith(text!!, ".mdx")) {
                     return super.createFileReference(textRange, i, text)
                 }
 
-                return object : JSModuleReference(text, i, textRange!!, this, templateName, isSoft) {
-                    private fun getFile(): PsiFile? {
-                        val contexts = RecursionManager.doPreventingRecursion<Collection<PsiFileSystemItem>>(this, false) { getContexts() }
-                                ?: //                            this.LOG.error("Recursion occurred for " + javaClass + " on " + element.text)
-                                return null
-                        for (context in contexts) {
-                            if (context.isDirectory && context.virtualFile.findFileByRelativePath(text) != null) {
-                                val virtualFile = context.virtualFile.findFileByRelativePath(text)
-                                val jsPsi = context.manager.findFile(virtualFile!!)?.viewProvider?.getPsi(MdxJSLanguage.INSTANCE)
-                                return jsPsi
+                return object : JSModuleReference(text, i, textRange!!, this, emptyArray(), templateName, isSoft) {
+                    override fun innerResolve(caseSensitive: Boolean, containingFile: PsiFile): Array<ResolveResult> {
+                        val result = super.innerResolve(caseSensitive, containingFile)
+                        (result.indices).forEach { i ->
+                            if (result[i].element is MdxFile) {
+                                result[i] = PsiElementResolveResult((result[i].element as MdxFile).viewProvider.getPsi(MdxJSLanguage.INSTANCE).originalFile.originalElement)
                             }
                         }
-
-                        return null
-                    }
-
-                    override fun innerResolve(caseSensitive: Boolean, containingFile: PsiFile): Array<ResolveResult> {
-                        val myFile = getFile()
-                        if (myFile == null) {
-                            return super.innerResolve(caseSensitive, containingFile)
-                        }
-                        val result = LinkedHashSet<ResolveResult>()
-                        result.add(PsiElementResolveResult((myFile as PsiFileSystemItem)))
-                        return result.toTypedArray()
+                        return result
 
                     }
                 }
