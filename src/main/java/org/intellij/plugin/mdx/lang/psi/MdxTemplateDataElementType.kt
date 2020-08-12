@@ -1,5 +1,6 @@
 package org.intellij.plugin.mdx.lang.psi
 
+import com.intellij.lang.javascript.types.JEEmbeddedBlockElementType
 import com.intellij.psi.templateLanguages.TemplateDataElementType
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.TokenSet
@@ -10,7 +11,10 @@ import org.intellij.plugins.markdown.lang.MarkdownElementType
 object MdxTemplateDataElementType : TemplateDataElementType("MDX_TEMPLATE_JSX",
         MdxLanguage,
         MarkdownElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT),
-        IElementType("OUTER_BLOCK", MdxLanguage)) {
+        IElementType("OUTER_BLOCK", MdxLanguage)),
+        JEEmbeddedBlockElementType {
+
+    override fun isModule(): Boolean = true
 
     override fun getTemplateDataInsertionTokens(): TokenSet {
         return TokenSet.forAllMatching(IElementType.TRUE)

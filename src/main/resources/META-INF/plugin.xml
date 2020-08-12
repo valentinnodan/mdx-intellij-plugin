@@ -31,6 +31,7 @@
                                    implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
         <lang.inspectionSuppressor language="MDX"
                                    implementationClass="org.intellij.plugin.mdx.codeInspection.MdxInspectionSuppressor"/>
+        <xml.zenCodingGenerator implementation="org.intellij.plugin.mdx.js.MdxZenCodingGenerator"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
