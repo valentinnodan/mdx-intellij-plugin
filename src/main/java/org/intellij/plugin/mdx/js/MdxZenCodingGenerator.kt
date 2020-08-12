@@ -6,13 +6,6 @@ import org.intellij.plugin.mdx.lang.psi.MdxFile
 
 class MdxZenCodingGenerator: JSXZenCodingGenerator() {
     override fun isMyContext(callback: CustomTemplateCallback, wrapping: Boolean): Boolean {
-        val context = callback.context
-        if (context.containingFile !is MdxFile) {
-            return false
-        }
-
-        return true
+        return callback.context.containingFile is MdxFile
     }
-
-
 }
