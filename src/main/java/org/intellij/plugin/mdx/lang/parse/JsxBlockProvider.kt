@@ -14,8 +14,12 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
         val matchingGroup = matches(pos, stateInfo.currentConstraints)
         if (matchingGroup != -1) {
             if (matchingGroup == IMPORT_EXPORT_CONST) {
+                var endOfRange = pos.nextLineOrEofOffset
+                if (!pos.nextLine.isNullOrBlank()) {
+                    endOfRange++
+                }
                 productionHolder.addProduction(listOf(SequentialParser.Node(
-                        pos.offset..pos.nextLineOrEofOffset, MdxTokenTypes.JSX_BLOCK_CONTENT)))
+                        pos.offset..endOfRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
                 return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, END_REGEX, true, null))
             }
             val myStack: Stack<CharSequence> = Stack()
@@ -122,7 +126,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
                 "\\A(${OPEN_CLOSE_REGEXES.joinToString(separator = "|", transform = { "(${it.first.pattern})" })})"
         )
 
-        val END_REGEX = Regex("(($IMPORT_KEYWORD)|($EXPORT_KEYWORD)|(^$)|(${FIND_START_REGEX.pattern}))")
+        val END_REGEX = Regex("(^$)")
 
         val INLINE_REGEX = Regex("\\s*($CLOSE_TAG|$EMPTY_TAG).+")
     }
