@@ -10,10 +10,6 @@ class MdxParsingTest : ParsingTestCase("", "mdx", MdxParserDefinition(), Markdow
         doTest(true)
     }
 
-//    override fun allTreesInSingleFile(): Boolean {
-//        return true
-//    }
-
     override fun getTestDataPath(): String {
         return "src/test/testData"
     }
