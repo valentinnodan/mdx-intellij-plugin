@@ -15,8 +15,7 @@ class MdxHighlightTest : MdxTestBase() {
 
         myFixture.configureByText(
                 MdxFileType.INSTANCE,
-                "<weak_warning descr=\"Expression statement is not assignment or call\"><Button>\n" +
-                        "Press the button</Button></weak_warning>"
+                "<Button>Press the button</Button>"
         )
 
         myFixture.testHighlighting()

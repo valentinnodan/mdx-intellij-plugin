@@ -32,7 +32,7 @@ open class MdxTemplateDataElementTypeBase : TemplateDataElementType("MDX_TEMPLAT
     override fun collectTemplateModifications(sourceCode: CharSequence, baseLexer: Lexer): TemplateDataModifications {
         val modifications = TemplateDataModifications()
         baseLexer.start(sourceCode)
-        while (baseLexer.tokenType != null) {
+         while (baseLexer.tokenType != null) {
             if (baseLexer.tokenType === MarkdownElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT)) {
                 val trim = baseLexer.tokenText.trim()
                 var hadEnter = false
