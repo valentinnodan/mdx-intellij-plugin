@@ -16,4 +16,8 @@ abstract class MdxTestBase : BasePlatformTestCase() {
                 HtmlUnknownBooleanAttributeInspection()
         )
     }
+
+    override fun getTestDataPath(): String {
+        return "src/test/testData"
+    }
 }

@@ -45,13 +45,18 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.xml.XmlExtension;
 import com.intellij.xml.util.HtmlUtil;
 import com.intellij.xml.util.XmlUtil;
-import org.intellij.plugin.mdx.js.MdxJSLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
+
+/**
+ * It is a copy-paste, only SUPPORTED_LANGUAGES is changed
+ *
+ * @see com.intellij.codeInsight.editorActions.XmlTagNameSynchronizer
+ */
 
 public final class MdxTagNameSynchronizer implements EditorFactoryListener {
     private static final Key<Boolean> SKIP_COMMAND = (Key<Boolean>) Key.findKeyByName("tag.name.synchronizer.skip.command");

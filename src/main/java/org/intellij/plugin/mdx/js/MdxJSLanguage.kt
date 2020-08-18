@@ -4,7 +4,6 @@ import com.intellij.lang.PsiBuilder
 import com.intellij.lang.javascript.DialectOptionHolder
 import com.intellij.lang.javascript.JSLanguageDialect
 import com.intellij.lang.javascript.JavaScriptSupportLoader
-import com.intellij.lang.javascript.dialects.JSXHarmonyLanguageDialect
 import com.intellij.lang.javascript.parsing.JavaScriptParser
 
 class MdxJSLanguage : JSLanguageDialect("MdxJS", DialectOptionHolder.JSX, JavaScriptSupportLoader.JSX_HARMONY) {

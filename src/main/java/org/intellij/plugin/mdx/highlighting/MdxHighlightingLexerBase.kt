@@ -8,8 +8,6 @@ import org.intellij.markdown.ast.visitors.RecursiveVisitor
 import org.intellij.plugin.mdx.lang.parse.MdxFlavourDescriptor
 import org.intellij.plugin.mdx.lang.parse.MdxTokenTypes
 import org.intellij.plugins.markdown.lang.MarkdownElementType
-import org.intellij.plugins.markdown.lang.MarkdownElementTypes
-import org.intellij.plugins.markdown.lang.parser.MarkdownParserAdapter
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
 import java.util.*
 
@@ -21,7 +19,7 @@ class MdxHighlightingLexerBase() : LexerBase() {
     private var myStartOffsets: MutableList<Int>? = null
     private var myEndOffsets: MutableList<Int>? = null
     private var myLexemeIndex = 0
-    private var lastTokenText:CharSequence? = null
+    private var lastTokenText: CharSequence? = null
 
     override fun start(buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int) {
         myBuffer = buffer
@@ -79,19 +77,10 @@ class MdxHighlightingLexerBase() : LexerBase() {
                 val subSequence = myBuffer?.subSequence(node.startOffset, node.endOffset)
                 if (myLexemes?.isNotEmpty()!! &&
                         myLexemes?.last() == MarkdownElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT) &&
-                        node.type == MdxTokenTypes.JSX_BLOCK_CONTENT) {
-                    if (!subSequence?.trim().isNullOrEmpty()) {
-                        myEndOffsets?.removeAt(myEndOffsets?.lastIndex!!)
-                        myEndOffsets?.add(node.endOffset)
-                    }
-                    else if (lastTokenText?.endsWith("\n") != true){
-                        myEndOffsets?.removeAt(myEndOffsets?.lastIndex!!)
-                        myEndOffsets?.add(node.endOffset)
-                    } else {
-                        myLexemes?.add(MarkdownElementType.platformType(node.type))
-                        myStartOffsets?.add(node.startOffset)
-                        myEndOffsets?.add(node.endOffset)
-                    }
+                        node.type == MdxTokenTypes.JSX_BLOCK_CONTENT &&
+                        (!subSequence?.trim().isNullOrEmpty() || lastTokenText?.endsWith("\n") != true)) {
+                    myEndOffsets?.removeAt(myEndOffsets?.lastIndex!!)
+                    myEndOffsets?.add(node.endOffset)
                 } else {
                     myLexemes?.add(MarkdownElementType.platformType(node.type))
                     myStartOffsets?.add(node.startOffset)

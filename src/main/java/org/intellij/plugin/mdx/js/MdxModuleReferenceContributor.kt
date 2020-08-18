@@ -5,7 +5,6 @@ import com.intellij.lang.javascript.DialectDetector
 import com.intellij.lang.javascript.frameworks.amd.JSModuleReference
 import com.intellij.lang.javascript.frameworks.modules.JSBaseModuleReferenceContributor
 import com.intellij.lang.javascript.frameworks.modules.JSModuleFileReferenceSet
-import com.intellij.lang.javascript.frameworks.modules.JSModuleReferenceBase
 import com.intellij.lang.javascript.psi.resolve.JSModuleReferenceContributor
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.text.StringUtil
@@ -13,7 +12,6 @@ import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import org.intellij.plugin.mdx.lang.psi.MdxFile
 import org.jetbrains.annotations.NotNull
-import java.util.*
 
 
 class MdxModuleReferenceContributor : JSBaseModuleReferenceContributor() {

@@ -1,7 +1,6 @@
 package org.intellij.plugin.mdx.lang.parse
 
 import org.intellij.markdown.IElementType
-import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
@@ -89,7 +88,6 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
                     endOfRange++
                 }
                 val contentRange = (pos.offset + 1 + constraints.getIndent()).coerceAtMost(nextLineOffset)..endOfRange
-                val enterRange = pos.offset + 1 .. endOfRange
                 if (contentRange.first < contentRange.last) {
                     productionHolder.addProduction(listOf(SequentialParser.Node(
                             contentRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))

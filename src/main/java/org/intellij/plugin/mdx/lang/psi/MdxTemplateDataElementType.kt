@@ -3,13 +3,11 @@ package org.intellij.plugin.mdx.lang.psi
 import com.intellij.lang.javascript.types.JEEmbeddedBlockElementType
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.util.TextRange
-import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.templateLanguages.TemplateDataElementType
 import com.intellij.psi.templateLanguages.TemplateDataModifications
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.TokenSet
 import org.intellij.plugin.mdx.lang.MdxLanguage
-import org.intellij.plugin.mdx.lang.parse.JsxBlockProvider.Companion.FIND_START_IMPORT_EXPORT
 import org.intellij.plugin.mdx.lang.parse.MdxTokenTypes
 import org.intellij.plugins.markdown.lang.MarkdownElementType
 import kotlin.math.min
