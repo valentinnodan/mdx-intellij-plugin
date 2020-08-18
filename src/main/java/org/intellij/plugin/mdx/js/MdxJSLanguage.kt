@@ -11,7 +11,7 @@ class MdxJSLanguage : JSLanguageDialect("MdxJS", DialectOptionHolder.JSX, JavaSc
         val INSTANCE = MdxJSLanguage()
     }
 
-    override fun getFileExtension(): String = "js"
+    override fun getFileExtension(): String = "mdx"
     override fun createParser(builder: PsiBuilder): JavaScriptParser<*, *, *, *> {
         return MdxJSLanguageParser(builder)
     }
