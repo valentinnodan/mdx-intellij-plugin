@@ -2,12 +2,14 @@ package org.intellij.plugin.mdx.lang.psi
 
 import com.intellij.lang.Language
 import com.intellij.lang.LanguageParserDefinitions
+import com.intellij.lang.javascript.DialectDetector
 import com.intellij.lang.xml.XMLLanguage
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.PsiFileImpl
 import com.intellij.psi.templateLanguages.OuterLanguageElement
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
+import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ReflectionUtil
 import com.intellij.xml.util.HtmlUtil
 import org.intellij.plugin.mdx.js.MdxJSLanguage
@@ -49,27 +51,22 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
             MdxFileViewProvider(manager, fileCopy, false)
 
     override fun findElementAt(offset: Int, lang: Class<out Language?>): PsiElement? {
-        val mainRoot = getPsi(baseLanguage)!!
-        var ret: PsiElement? = null
-        for (language in languages) {
-            if (!ReflectionUtil.isAssignable(lang, language.javaClass)){
-                if (lang == XMLLanguage.INSTANCE.javaClass){
-                        if (!HtmlUtil.supportsXmlTypedHandlers(getPsi(language)!!)){
-                            continue
-                        }
-                } else {
-                    continue
+        if (lang == XMLLanguage::class.java) {
+            val psi = getPsi(MdxJSLanguage.INSTANCE)
+            if (psi != null && DialectDetector.isJSX(psi)) {
+                val element = findElementAt(offset)!!
+                if (isXmlElement(element)) {
+                    return element
                 }
             }
-            if (lang == Language::class.java && !languages.contains(language)) continue
-            val psiRoot = getPsi(language)!!
-            val psiElement = AbstractFileViewProvider.findElementAt(psiRoot, offset)
-            if (psiElement == null || psiElement is OuterLanguageElement) continue
-            if (ret == null || psiRoot !== mainRoot) {
-                ret = psiElement
-            }
         }
-        return ret
+        return super.findElementAt(offset, lang)
+    }
+
+    private fun isXmlElement(element: PsiElement?): Boolean {
+        if (element == null) return false
+        if (element.language is XMLLanguage) return true
+        return if (element is PsiWhiteSpace && element.getParent() is XmlTag) true else false
     }
 }
 
