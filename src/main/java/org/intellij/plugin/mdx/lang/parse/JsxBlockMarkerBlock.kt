@@ -1,6 +1,7 @@
 package org.intellij.plugin.mdx.lang.parse
 
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
@@ -8,7 +9,6 @@ import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import java.lang.Integer.min
 import java.util.*
 
 class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
@@ -44,6 +44,9 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
             if (endCheckingRegex == null && MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints) >= 2) {
                 return MarkerBlock.ProcessingResult.DEFAULT
             } else if (endCheckingRegex != null && endCheckingRegex.find(prevLine) != null) {
+                productionHolder.addProduction(listOf(SequentialParser.Node(
+                        pos.offset + constraints.getCharsEaten(pos.currentLine)..pos.offset + 1 + constraints.getCharsEaten(pos.currentLine),
+                        MdxTokenTypes.JSX_BLOCK_CONTENT)))
                 return MarkerBlock.ProcessingResult.DEFAULT
             }
 
@@ -72,7 +75,7 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
             val nextLineOffset = pos.nextLineOrEofOffset
             realInterestingOffset = nextLineOffset
 
-            val currentLine = pos.currentLine.subSequence(min(pos.currentLine.length, nextLineConstraints.getIndent()), pos.currentLine.length)
+            val currentLine = pos.currentLine.subSequence(nextLineConstraints.getIndent(), pos.currentLine.length)
             if (currentLine.isEmpty()) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(
                         nextLineOffset - 1..nextLineOffset, MdxTokenTypes.JSX_BLOCK_CONTENT)))
@@ -88,6 +91,7 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
                     endOfRange++
                 }
                 val contentRange = (pos.offset + 1 + constraints.getIndent()).coerceAtMost(nextLineOffset)..endOfRange
+                val enterRange = pos.offset + 1 .. endOfRange
                 if (contentRange.first < contentRange.last) {
                     productionHolder.addProduction(listOf(SequentialParser.Node(
                             contentRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))

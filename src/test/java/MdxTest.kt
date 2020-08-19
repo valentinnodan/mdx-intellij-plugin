@@ -11,14 +11,24 @@ class MdxTest : MdxTestBase() {
         val ref = myFixture.getReferenceAtCaretPosition()
         TestCase.assertNotNull(ref?.resolve())
     }
+
     fun testFindUsages() {
         val usageInfos = myFixture.testFindUsages("FindUsagesTestData.mdx", "FindUsagesTestData.kt")
         TestCase.assertEquals(1, usageInfos.size)
     }
+
     fun testFormatter() {
         myFixture.configureByFile("FormatterTestData.mdx")
         OptimizeImportsAction.actionPerformedImpl(DataManager.getInstance().getDataContext(myFixture.editor.contentComponent))
         FileDocumentManager.getInstance().saveAllDocuments()
         myFixture.checkResultByFile("DefaultTestData.mdx")
+    }
+
+    fun testFoldingImports() {
+        doTestFolding()
+    }
+
+    private fun doTestFolding() {
+        myFixture.testFoldingWithCollapseStatus(testDataPath + "/" + getTestName(false) + ".mdx")
     }
 }

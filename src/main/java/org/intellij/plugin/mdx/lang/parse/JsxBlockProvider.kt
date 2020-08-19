@@ -112,7 +112,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val END_TAG_REGEX = Regex("(^|[^<]*)>")
 
-        val MULTILINE_TAG_REGEX_PAIR = Pair(Regex("<$TAG_NAME.*"), END_TAG_REGEX)
+        val MULTILINE_TAG_REGEX_PAIR = Pair(Regex("<$TAG_NAME.*"), null)
 
         val OPEN_CLOSE_REGEXES: List<Pair<Regex, Regex?>> = listOf(
                 Pair(Regex("<(?i:script|pre|style)(?: |>|$)"), Regex("</(?i:script|style|pre)>")),

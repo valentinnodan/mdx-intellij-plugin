@@ -10,7 +10,7 @@ class MdxParsingTest : ParsingTestCase("", "mdx", MdxParserDefinition(), Markdow
     }
 
     override fun getTestDataPath(): String {
-        return "src/test/testData"
+        return "src/test/testData/parsing"
     }
 
     override fun skipSpaces(): Boolean {

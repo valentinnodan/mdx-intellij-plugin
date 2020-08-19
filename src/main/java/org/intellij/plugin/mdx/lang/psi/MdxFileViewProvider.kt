@@ -7,11 +7,8 @@ import com.intellij.lang.xml.XMLLanguage
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.PsiFileImpl
-import com.intellij.psi.templateLanguages.OuterLanguageElement
 import com.intellij.psi.templateLanguages.TemplateLanguageFileViewProvider
 import com.intellij.psi.xml.XmlTag
-import com.intellij.util.ReflectionUtil
-import com.intellij.xml.util.HtmlUtil
 import org.intellij.plugin.mdx.js.MdxJSLanguage
 import org.intellij.plugin.mdx.lang.MdxLanguage
 import org.intellij.plugin.mdx.lang.parse.MdxFlavourDescriptor
