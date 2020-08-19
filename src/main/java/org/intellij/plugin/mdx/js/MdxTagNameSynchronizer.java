@@ -48,10 +48,12 @@ import com.intellij.xml.util.XmlUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import com.intellij.codeInsight.editorActions.XmlTagNameSynchronizer;
 /**
  * It is a copy-paste, only SUPPORTED_LANGUAGES is changed
  *
@@ -59,7 +61,7 @@ import java.util.stream.Stream;
  */
 
 public final class MdxTagNameSynchronizer implements EditorFactoryListener {
-    private static final Key<Boolean> SKIP_COMMAND = (Key<Boolean>) Key.findKeyByName("tag.name.synchronizer.skip.command");
+    private static final Key<Boolean> SKIP_COMMAND;
     private static final Logger LOG = Logger.getInstance(MdxTagNameSynchronizer.class);
     private static final Set<Language> SUPPORTED_LANGUAGES = ContainerUtil.set(HTMLLanguage.INSTANCE,
     XMLLanguage.INSTANCE,
@@ -67,7 +69,20 @@ public final class MdxTagNameSynchronizer implements EditorFactoryListener {
 
     private static final Key<TagNameSynchronizer> SYNCHRONIZER_KEY = Key.create("tag_name_synchronizer");
 
-    private MdxTagNameSynchronizer() {}
+    static {
+        Key<Boolean> SKIP_COMMAND1 = null;
+        try {
+            Field field = XmlTagNameSynchronizer.class.getDeclaredField("SKIP_COMMAND");
+            field.setAccessible(true);
+            SKIP_COMMAND1 = (Key<Boolean>) field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        SKIP_COMMAND = SKIP_COMMAND1;
+    }
+
+    private MdxTagNameSynchronizer() {
+    }
 
     private static void createSynchronizerFor(Editor editor) {
         Project project = editor.getProject();
