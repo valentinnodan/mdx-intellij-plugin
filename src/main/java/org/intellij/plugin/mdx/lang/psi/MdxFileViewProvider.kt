@@ -63,7 +63,7 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
     private fun isXmlElement(element: PsiElement?): Boolean {
         if (element == null) return false
         if (element.language is XMLLanguage) return true
-        return if (element is PsiWhiteSpace && element.getParent() is XmlTag) true else false
+        return element is PsiWhiteSpace && element.getParent() is XmlTag
     }
 }
 

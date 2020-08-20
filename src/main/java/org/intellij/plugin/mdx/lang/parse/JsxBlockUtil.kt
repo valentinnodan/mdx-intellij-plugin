@@ -15,15 +15,15 @@ object JsxBlockUtil {
                          productionHolder: ProductionHolder,
                          constraints: MarkdownConstraints,
                          hasEnter: Boolean) {
-        val groups: MutableList<Pair<String, IntRange>> = ArrayList()
-        val text = pos.currentLine
+        val groups: MutableList<Pair<String, IntRange>> = mutableListOf()
+        val text = if (pos.offsetInCurrentLine >= 0) {pos.currentLineFromPosition} else {pos.currentLine}
         TAG_REGEX.findAll(text).iterator().forEach {
             groups.add(Pair(it.groupValues[0], it.range))
         }
         val delta = if (hasEnter) {
-            1 + constraints.getCharsEaten(pos.currentLine) + pos.offset
+            1 + constraints.getCharsEaten(text) + pos.offset
         } else {
-            constraints.getCharsEaten(pos.currentLine) + pos.offset
+            constraints.getCharsEaten(text) + pos.offset
         }
         var myPos = 0
         var nextGroupInd = 0
