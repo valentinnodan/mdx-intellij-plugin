@@ -7,6 +7,17 @@ import org.intellij.plugin.mdx.lang.MdxFileType
 
 class MdxHighlightTest : MdxTestBase() {
     fun testJsxSimple() {
+        doTestHighlighting("<Button>Press the button</Button>")
+    }
+    fun testUnresolvedVariable() {
+        val text = """import {h} from 'hello.mdx'
+        
+        <div>{<weak_warning descr="Unresolved variable or type hello">hello</weak_warning>}</div>
+        """.trimMargin()
+        doTestHighlighting(text)
+    }
+
+    fun doTestHighlighting(text: String) {
         myFixture.enableInspections(TypeScriptCheckImportInspection(),
                 TypeScriptValidateTypesInspection(),
                 TypeScriptUnresolvedVariableInspection(),
@@ -15,8 +26,7 @@ class MdxHighlightTest : MdxTestBase() {
 
         myFixture.configureByText(
                 MdxFileType.INSTANCE,
-                "<weak_warning descr=\"Expression statement is not assignment or call\"><Button>\n" +
-                        "Press the button</Button></weak_warning>"
+                text
         )
 
         myFixture.testHighlighting()

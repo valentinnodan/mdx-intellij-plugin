@@ -13,7 +13,12 @@
     <depends>org.intellij.plugins.markdown</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>JavaScript</depends>
-
+    <applicationListeners>
+        <listener class="org.intellij.plugin.mdx.js.MdxTagNameSynchronizer$MyCommandListener"
+                  topic="com.intellij.openapi.command.CommandListener"/>
+        <listener class="org.intellij.plugin.mdx.js.MdxTagNameSynchronizer$MyDynamicPluginListener"
+                  topic="com.intellij.ide.plugins.DynamicPluginListener"/>
+    </applicationListeners>
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="MDX" implementationClass="org.intellij.plugin.mdx.lang.MdxFileType"
                   fieldName="INSTANCE" language="MDX" extensions="mdx"/>
@@ -25,11 +30,18 @@
         <editorHighlighterProvider filetype="MDX"
                                    implementationClass="org.intellij.plugin.mdx.highlighting.MdxEditorHighlighterProvider"/>
         <colorSettingsPage implementation="org.intellij.plugin.mdx.highlighting.MdxColorSettingsPage"/>
-        <outerLanguageRangePatcher language="JSX Harmony"
+
+        <lang.parserDefinition language="MdxJS" implementationClass="org.intellij.plugin.mdx.js.MdxJSParserDefinition"/>
+        <outerLanguageRangePatcher language="MdxJS"
                                    implementationClass="org.intellij.plugin.mdx.lang.psi.MdxOuterLanguagePatcher"/>
         <lang.inspectionSuppressor language="MDX"
                                    implementationClass="org.intellij.plugin.mdx.codeInspection.MdxInspectionSuppressor"/>
-        <!--        <xml.xmlSuppressionProvider implementation="com.intellij.lang.javascript.frameworks.react.JSXInspectionFilter"/>-->
+        <xml.zenCodingGenerator implementation="org.intellij.plugin.mdx.js.MdxZenCodingGenerator"/>
+        <editorFactoryListener implementation="org.intellij.plugin.mdx.js.MdxTagNameSynchronizer$MyEditorFactoryListener"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="JavaScript">
+        <moduleReferenceContributor implementation="org.intellij.plugin.mdx.js.MdxModuleReferenceContributor"/>
     </extensions>
 
     <actions>

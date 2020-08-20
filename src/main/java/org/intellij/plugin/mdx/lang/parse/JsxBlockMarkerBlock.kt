@@ -1,6 +1,7 @@
 package org.intellij.plugin.mdx.lang.parse
 
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
@@ -8,21 +9,18 @@ import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import java.util.*
 
 class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
                           private val productionHolder: ProductionHolder,
                           private val endCheckingRegex: Regex?,
-                          startPosition: LookaheadText.Position,
-                          private val isExportImport: Boolean)
-    : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
-    init {
-        if (!isExportImport) {
-            productionHolder.addProduction(listOf(SequentialParser.Node(
-                    startPosition.offset..startPosition.nextLineOrEofOffset, MdxTokenTypes.JSX_BLOCK_CONTENT)))
-        }
-    }
+                          private val isExportImport: Boolean,
+                          private var tagStack: Stack<CharSequence>?
+) : MarkerBlockImpl(myConstraints, productionHolder.mark()) {
 
     private var realInterestingOffset = -1
+
+    private var hadEmptyString = false
 
     override fun allowsSubBlocks(): Boolean = false
 
@@ -43,7 +41,7 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
                 return MarkerBlock.ProcessingResult.DEFAULT
             }
 
-            if (endCheckingRegex == null && MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints) >= 2) {
+            if (endCheckingRegex == null && MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints) >= 2 && tagStack.isNullOrEmpty()) {
                 return MarkerBlock.ProcessingResult.DEFAULT
             } else if (endCheckingRegex != null && endCheckingRegex.find(prevLine) != null) {
                 return MarkerBlock.ProcessingResult.DEFAULT
@@ -51,8 +49,9 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
 
             if (pos.currentLine.isNotEmpty()) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(
-                        pos.offset + 1 + constraints.getCharsEaten(pos.currentLine)..pos.nextLineOrEofOffset,
+                        pos.offset + constraints.getCharsEaten(pos.currentLine)..pos.offset + 1 + constraints.getCharsEaten(pos.currentLine),
                         MdxTokenTypes.JSX_BLOCK_CONTENT)))
+                JsxBlockUtil.parseParenthesis(pos, tagStack!!, productionHolder, constraints, true)
             }
         } else {
             if (pos.offset < realInterestingOffset) {
@@ -74,18 +73,28 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
             realInterestingOffset = nextLineOffset
 
             val currentLine = pos.currentLine.subSequence(nextLineConstraints.getIndent(), pos.currentLine.length)
-            if (endsThisBlock(currentLine)) {
+            if (currentLine.isEmpty()) {
+                productionHolder.addProduction(listOf(SequentialParser.Node(
+                        nextLineOffset - 1..nextLineOffset, MdxTokenTypes.JSX_BLOCK_CONTENT)))
+                hadEmptyString = true
+                return MarkerBlock.ProcessingResult.CANCEL
+            } else if (hadEmptyString) {
+                productionHolder.addProduction(listOf(SequentialParser.Node(
+                        pos.offset..pos.offset + 1, MdxTokenTypes.JSX_BLOCK_CONTENT)))
                 return MarkerBlock.ProcessingResult.DEFAULT
             } else {
-                val contentRange = Math.min(pos.offset + 1 + constraints.getIndent(), nextLineOffset)..nextLineOffset
-                val enterRange = pos.offset..nextLineOffset
+                var endOfRange = nextLineOffset
+                if (!pos.nextLine.isNullOrBlank()) {
+                    endOfRange++
+                }
+                val contentRange = (pos.offset + 1 + constraints.getIndent()).coerceAtMost(nextLineOffset)..endOfRange
+                val enterRange = pos.offset + 1 .. endOfRange
                 if (contentRange.first < contentRange.last) {
-                    productionHolder.addProduction(listOf(SequentialParser.Node(
-                            enterRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
                     productionHolder.addProduction(listOf(SequentialParser.Node(
                             contentRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
                 }
             }
+
         }
         return MarkerBlock.ProcessingResult.CANCEL
     }

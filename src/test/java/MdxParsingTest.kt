@@ -1,15 +1,16 @@
+import com.intellij.lang.javascript.dialects.ECMA6ParserDefinition
 import com.intellij.testFramework.ParsingTestCase
+import org.intellij.plugin.mdx.js.MdxJSParserDefinition
 import org.intellij.plugin.mdx.lang.parse.MdxParserDefinition
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserDefinition
-import org.intellij.plugins.markdown.lang.parser.MarkdownParserManager
 
-class MdxParsingTest : ParsingTestCase("", "mdx", MdxParserDefinition(), MarkdownParserDefinition(), com.intellij.lang.jsx.JSXHarmonyParserDefinition()) {
+class MdxParsingTest : ParsingTestCase("", "mdx", MdxParserDefinition(), MarkdownParserDefinition(), MdxJSParserDefinition(), ECMA6ParserDefinition()) {
     fun testParsingTestData() {
         doTest(true)
     }
 
     override fun getTestDataPath(): String {
-        return "src/test/testData"
+        return "src/test/testData/parsing"
     }
 
     override fun skipSpaces(): Boolean {

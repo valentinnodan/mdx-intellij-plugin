@@ -2,8 +2,8 @@ package org.intellij.plugin.mdx.codeInspection
 
 import com.intellij.codeInspection.InspectionSuppressor
 import com.intellij.codeInspection.SuppressQuickFix
-import com.intellij.lang.javascript.inspections.JSXNamespaceValidationInspection
 import com.intellij.psi.PsiElement
+import org.intellij.plugin.mdx.lang.psi.MdxFile
 
 class MdxInspectionSuppressor : InspectionSuppressor {
     override fun getSuppressActions(element: PsiElement?, toolId: String): Array<SuppressQuickFix> {
@@ -11,8 +11,7 @@ class MdxInspectionSuppressor : InspectionSuppressor {
     }
 
     override fun isSuppressedFor(element: PsiElement, name: String): Boolean {
-        println(name)
-        if (name.equals("JSXNamespaceValidation")) {
+        if (element is MdxFile && (name == "JSXNamespaceValidation" || name == "BadExpressionStatementJS")) {
             return true
         }
         return false
