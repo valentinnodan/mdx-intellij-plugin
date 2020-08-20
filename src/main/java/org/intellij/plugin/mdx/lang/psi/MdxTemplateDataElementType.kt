@@ -35,7 +35,7 @@ open class MdxTemplateDataElementTypeBase : TemplateDataElementType("MDX_TEMPLAT
                 val trim = baseLexer.tokenText.trim()
                 var hadEnter = false
                 if (trim.startsWith("import") || trim.startsWith("export")) {
-                    while (baseLexer.tokenType == MarkdownElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT) && baseLexer.tokenType != null) {
+                    while (baseLexer.tokenType == MarkdownElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT)) {
                         if (baseLexer.tokenText.trim() == "" && hadEnter) {
                             break
                         }
@@ -50,8 +50,9 @@ open class MdxTemplateDataElementTypeBase : TemplateDataElementType("MDX_TEMPLAT
                         return modifications
                     }
                     val sequence = baseLexer.bufferSequence
-                    if (!sequence.subSequence(0, lastImportExportBlock).trim().endsWith(';')) {
-                        modifications.addRangeToRemove(min(lastImportExportBlock - 1, sequence.length - 1), ";")
+                    val trim1 = sequence.subSequence(0, lastImportExportBlock).trim()
+                    if (!trim1.endsWith(';')) {
+                        modifications.addRangeToRemove(min(trim1.length, sequence.length - 1), ";")
                     }
                 }
             } else {
