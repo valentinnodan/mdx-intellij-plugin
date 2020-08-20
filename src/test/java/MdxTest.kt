@@ -28,6 +28,14 @@ class MdxTest : MdxTestBase() {
         doTestFolding()
     }
 
+    fun testFoldingOneImport() {
+        doTestFolding()
+    }
+
+    fun testFoldingMultilineImport() {
+        doTestFolding()
+    }
+
     private fun doTestFolding() {
         myFixture.testFoldingWithCollapseStatus(testDataPath + "/" + getTestName(false) + ".mdx")
     }

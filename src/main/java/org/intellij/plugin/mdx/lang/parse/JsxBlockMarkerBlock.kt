@@ -44,9 +44,6 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
             if (endCheckingRegex == null && MarkdownParserUtil.calcNumberOfConsequentEols(pos, constraints) >= 2 && tagStack.isNullOrEmpty()) {
                 return MarkerBlock.ProcessingResult.DEFAULT
             } else if (endCheckingRegex != null && endCheckingRegex.find(prevLine) != null) {
-                productionHolder.addProduction(listOf(SequentialParser.Node(
-                        pos.offset + constraints.getCharsEaten(pos.currentLine)..pos.offset + 1 + constraints.getCharsEaten(pos.currentLine),
-                        MdxTokenTypes.JSX_BLOCK_CONTENT)))
                 return MarkerBlock.ProcessingResult.DEFAULT
             }
 

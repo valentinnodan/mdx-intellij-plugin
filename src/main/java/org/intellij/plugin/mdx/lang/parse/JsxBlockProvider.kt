@@ -97,20 +97,17 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
          */
         val CLOSE_TAG = "</$TAG_NAME\\s*>"
 
-        val TAG_REGEX = Regex("$OPEN_TAG|$CLOSE_TAG|$EMPTY_TAG|<$TAG_NAME[^>]*")
+        val TAG_REGEX = Regex("$OPEN_TAG|$CLOSE_TAG|$EMPTY_TAG|<$TAG_NAME[^>]*$|^[^<]*/>")
 
         val OPEN_TAG_REGEX = Regex("$OPEN_TAG|<$TAG_NAME[^>]*$")
 
-        val CLOSE_TAG_REGEX = Regex(CLOSE_TAG)
+        val CLOSE_TAG_REGEX = Regex("$CLOSE_TAG|[^<]*/>")
 
-        val EMPTY_TAG_REGEX = Regex(EMPTY_TAG)
 
         /** see {@link http://spec.commonmark.org/0.21/#html-blocks}
          *
          * nulls mean "Next line should be blank"
          * */
-
-        val END_TAG_REGEX = Regex("(^|[^<]*)>")
 
         val MULTILINE_TAG_REGEX_PAIR = Pair(Regex("<$TAG_NAME.*"), null)
 
