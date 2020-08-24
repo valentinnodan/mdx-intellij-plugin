@@ -38,6 +38,7 @@
                                    implementationClass="org.intellij.plugin.mdx.codeInspection.MdxInspectionSuppressor"/>
         <xml.zenCodingGenerator implementation="org.intellij.plugin.mdx.js.MdxZenCodingGenerator"/>
         <editorFactoryListener implementation="org.intellij.plugin.mdx.js.MdxTagNameSynchronizer$MyEditorFactoryListener"/>
+        <lang.formatter language="MDX" implementationClass="org.intellij.plugin.mdx.format.MdxFormattingModelBuilder"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">

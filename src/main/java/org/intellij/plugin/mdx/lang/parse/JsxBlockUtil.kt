@@ -62,4 +62,19 @@ object JsxBlockUtil {
             }
         }
     }
+    fun parseExportParenthesis(pos: LookaheadText.Position,
+                               bracketStack: Stack<CharSequence>){
+        val groups: MutableList<String> = mutableListOf()
+        val text = if (pos.offsetInCurrentLine >= 0) {pos.currentLineFromPosition} else {pos.currentLine}
+        Regex("\\{|\\}|\\(|\\)").findAll(text).iterator().forEach {
+            groups.add(it.groupValues[0])
+        }
+        for (group in groups) {
+            if (group == "{" || group == "(") {
+                bracketStack.push(group)
+            } else {
+                if (!bracketStack.empty()) {bracketStack.pop()}
+            }
+        }
+    }
 }

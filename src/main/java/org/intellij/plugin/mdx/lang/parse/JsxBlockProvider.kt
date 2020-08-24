@@ -12,17 +12,18 @@ import java.util.*
 class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
     override fun createMarkerBlocks(pos: LookaheadText.Position, productionHolder: ProductionHolder, stateInfo: MarkerProcessor.StateInfo): List<MarkerBlock> {
         val matchingGroup = matches(pos, stateInfo.currentConstraints)
+        val myStack: Stack<CharSequence> = Stack()
         if (matchingGroup != -1) {
             if (matchingGroup == IMPORT_EXPORT_CONST) {
                 var endOfRange = pos.nextLineOrEofOffset
                 if (!pos.nextLine.isNullOrBlank()) {
                     endOfRange++
                 }
+                JsxBlockUtil.parseExportParenthesis(pos, myStack)
                 productionHolder.addProduction(listOf(SequentialParser.Node(
                         pos.offset..endOfRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
-                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, END_REGEX, true, null))
+                return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, END_REGEX, true, myStack))
             }
-            val myStack: Stack<CharSequence> = Stack()
             JsxBlockUtil.parseParenthesis(pos, myStack, productionHolder, MarkdownConstraints.BASE, false)
             if (INLINE_REGEX.find(pos.currentLineFromPosition) == null) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(
@@ -88,14 +89,14 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val ATTRIBUTE = "\\s+$ATTR_NAME(?:$ATTR_VALUE)?"
 
-        val OPEN_TAG = "<$TAG_NAME(?:$ATTRIBUTE)*\\s*>"
+        val OPEN_TAG = "<$TAG_NAME(?:$ATTRIBUTE)*\\s*>|<>"
 
         val EMPTY_TAG = "<$TAG_NAME(?:$ATTRIBUTE)*\\s*/>"
 
         /**
          * Closing tag allowance is not in public spec version yet
          */
-        val CLOSE_TAG = "</$TAG_NAME\\s*>"
+        val CLOSE_TAG = "</$TAG_NAME\\s*>|</>"
 
         val TAG_REGEX = Regex("$OPEN_TAG|$CLOSE_TAG|$EMPTY_TAG|<$TAG_NAME[^>]*$|^[^<]*/>")
 
