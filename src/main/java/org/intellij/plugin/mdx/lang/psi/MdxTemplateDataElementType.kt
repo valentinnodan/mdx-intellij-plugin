@@ -1,6 +1,7 @@
 package org.intellij.plugin.mdx.lang.psi
 
 import com.intellij.lang.javascript.types.JEEmbeddedBlockElementType
+import com.intellij.lang.javascript.types.JSEmbeddedContentElementType
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.templateLanguages.TemplateDataElementType
@@ -23,6 +24,7 @@ object MdxTemplateDataElementType : MdxTemplateDataElementTypeBase(),
         return TokenSet.forAllMatching(IElementType.TRUE)
     }
 }
+
 
 open class MdxTemplateDataElementTypeBase : TemplateDataElementType("MDX_TEMPLATE_JSX",
         MdxLanguage,

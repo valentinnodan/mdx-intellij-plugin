@@ -80,9 +80,9 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
                 hadEmptyString = true
                 return MarkerBlock.ProcessingResult.CANCEL
             } else if (hadEmptyString) {
-                if (tagOrBracketStack?.empty()!!) {
-                    productionHolder.addProduction(listOf(SequentialParser.Node(
+                productionHolder.addProduction(listOf(SequentialParser.Node(
                         pos.offset..pos.offset + 1, MdxTokenTypes.JSX_BLOCK_CONTENT)))
+                if (tagOrBracketStack?.empty()!!) {
                     return MarkerBlock.ProcessingResult.DEFAULT
                 } else {
                     hadEmptyString = false
@@ -96,7 +96,6 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
                         productionHolder.addProduction(listOf(SequentialParser.Node(
                                 contentRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
                     }
-//                    return MarkerBlock.ProcessingResult.CANCEL
                 }
             } else {
                 var endOfRange = nextLineOffset

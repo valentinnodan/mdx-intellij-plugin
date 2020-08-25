@@ -1,4 +1,5 @@
 import {hello} from 'hello.mdx'
+import {unusedVar} from 'hello.mdx';
 import {Card} from "rebass";
 
 export default ({children}) => {
@@ -13,10 +14,17 @@ export default ({children}) => {
 
 #hello
 
-<div><div><div>div</div></div></div>
+<div>
+    <div>
+        <div>div</div>
+    </div>
+</div>
 
-<ul><li>1</li><li>2</li></ul>
+<ul>
+    <li>1</li>
+    <li>2</li>
+</ul>
 
-<App />
+<App/>
 
 <Grid><Card><img/></Card><Card><a/></Card></Grid>

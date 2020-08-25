@@ -17,8 +17,8 @@ class MdxTest : MdxTestBase() {
         TestCase.assertEquals(1, usageInfos.size)
     }
 
-    fun testFormatter() {
-        myFixture.configureByFile("FormatterTestData.mdx")
+    fun testOptimizeImports() {
+        myFixture.configureByFile("OptimizeImportsTestData.mdx")
         OptimizeImportsAction.actionPerformedImpl(DataManager.getInstance().getDataContext(myFixture.editor.contentComponent))
         FileDocumentManager.getInstance().saveAllDocuments()
         myFixture.checkResultByFile("DefaultTestData.mdx")

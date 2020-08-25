@@ -30,7 +30,7 @@ object JsxBlockUtil {
         while (myPos < text.length) {
             if (nextGroupInd < groups.size && groups[nextGroupInd].second.first == myPos) {
                 val tokenSequence = groups[nextGroupInd].first
-                if (tokenSequence.matches(JsxBlockProvider.OPEN_TAG_REGEX)) {
+                if (tokenSequence.matches(JsxBlockProvider.OPEN_TAG_REGEX) && !tokenSequence.matches(Regex(JsxBlockProvider.EMPTY_TAG))) {
                     tagStack.push(tokenSequence)
                 } else if (tokenSequence.matches(JsxBlockProvider.CLOSE_TAG_REGEX)) {
                     if (!tagStack.empty() && tagStack.peek().matches(JsxBlockProvider.OPEN_TAG_REGEX)) {

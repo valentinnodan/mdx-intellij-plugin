@@ -8,7 +8,6 @@ import com.intellij.formatting.templateLanguages.TemplateLanguageFormattingModel
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiErrorElement
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.formatter.DocumentBasedFormattingModel
 import com.intellij.psi.formatter.FormattingDocumentModelImpl
@@ -16,9 +15,7 @@ import com.intellij.psi.formatter.xml.HtmlPolicy
 import com.intellij.psi.formatter.xml.SyntheticBlock
 import com.intellij.psi.templateLanguages.SimpleTemplateLanguageFormattingModelBuilder
 import com.intellij.psi.tree.IElementType
-import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlTag
-import org.intellij.plugin.mdx.lang.parse.MdxElementTypes
 import org.intellij.plugin.mdx.lang.parse.MdxTokenTypes
 import org.intellij.plugins.markdown.lang.MarkdownElementType
 
@@ -74,7 +71,6 @@ class MdxFormattingModelBuilder : TemplateLanguageFormattingModelBuilder() {
         }
 
         override fun getChildAttributes(newChildIndex: Int): ChildAttributes {
-            println(myNode.text)
             return if (myNode.elementType === MdxTokenTypes.JSX_BLOCK_CONTENT) {
                 ChildAttributes(Indent.getNormalIndent(), null)
             } else {

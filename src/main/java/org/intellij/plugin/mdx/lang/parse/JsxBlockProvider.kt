@@ -85,7 +85,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val ATTR_NAME = "[A-Za-z:_][A-Za-z0-9_.:-]*"
 
-        val ATTR_VALUE = "\\s*=\\s*(?:[^ \"'=<>`]+|'[^']*'|\"[^\"]*\")"
+        val ATTR_VALUE = "\\s*=\\s*(?:[^\"'=<>`]+|'[^']*'|\"[^\"]*\")"
 
         val ATTRIBUTE = "\\s+$ATTR_NAME(?:$ATTR_VALUE)?"
 
@@ -102,7 +102,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val OPEN_TAG_REGEX = Regex("$OPEN_TAG|<$TAG_NAME[^>]*$")
 
-        val CLOSE_TAG_REGEX = Regex("$CLOSE_TAG|[^<]*/>")
+        val CLOSE_TAG_REGEX = Regex("$CLOSE_TAG|^[^<]*/>")
 
 
         /** see {@link http://spec.commonmark.org/0.21/#html-blocks}
