@@ -4,8 +4,15 @@
     <vendor>JetBrains</vendor>
 
     <description><![CDATA[
-    Plugin for MDX support in WebStorm/IDEA.
-    ]]></description>
+<p>Provides support for [MDX](https://mdxjs.com/), a language that blends Markdown and JSX syntax.</p>
+<p>Includes the following features:</p>
+<ul>
+<li>Syntax highlighting</li>
+<li>Code completion, auto imports and navigation to the definition for React components</li>
+<li>Coding assistance for JavaScript</li></ul>
+    ]]>
+    </description>
+
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -40,7 +47,7 @@
         <editorFactoryListener implementation="org.intellij.plugin.mdx.js.MdxTagNameSynchronizer$MyEditorFactoryListener"/>
         <lang.formatter language="MDX" implementationClass="org.intellij.plugin.mdx.format.MdxFormattingModelBuilder"/>
         <lang.formatter language="MdxJS" implementationClass="org.intellij.plugin.mdx.format.MdxJsFormattingModelBuilder"/>
-<!--        <fileIndentOptionsProvider implementation="org.intellij.plugin.mdx.format.MdxFileIndentOptionsProvider"/>-->
+        <fileIndentOptionsProvider implementation="org.intellij.plugin.mdx.format.MdxFileIndentOptionsProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
