@@ -4,7 +4,7 @@
     <vendor>JetBrains</vendor>
 
     <description><![CDATA[
-<p>Provides support for [MDX](https://mdxjs.com/), a language that blends Markdown and JSX syntax.</p>
+<p>Provides support for <a href="https://mdxjs.com/">MDX</a>, a language that blends Markdown and JSX syntax.</p>
 <p>Includes the following features:</p>
 <ul>
 <li>Syntax highlighting</li>
