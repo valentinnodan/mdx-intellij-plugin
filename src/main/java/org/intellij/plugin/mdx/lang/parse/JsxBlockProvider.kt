@@ -85,7 +85,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val ATTR_NAME = "[A-Za-z:_][A-Za-z0-9_.:-]*"
 
-        val ATTR_VALUE = "\\s*=\\s*(?:[^\"'=<>`]+|'[^']*'|\"[^\"]*\")"
+        val ATTR_VALUE = "\\s*=\\s*(?:[^=<>`]+|'[^']*'|\"[^\"]*\")"
 
         val ATTRIBUTE = "\\s+$ATTR_NAME(?:$ATTR_VALUE)?"
 
