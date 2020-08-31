@@ -30,7 +30,7 @@ object JsxBlockUtil {
         while (myPos < text.length) {
             if (nextGroupInd < groups.size && groups[nextGroupInd].second.first == myPos) {
                 val tokenSequence = groups[nextGroupInd].first
-                if (tokenSequence.matches(JsxBlockProvider.OPEN_TAG_REGEX)) {
+                if (tokenSequence.matches(JsxBlockProvider.OPEN_TAG_REGEX) && !tokenSequence.matches(Regex(JsxBlockProvider.EMPTY_TAG))) {
                     tagStack.push(tokenSequence)
                 } else if (tokenSequence.matches(JsxBlockProvider.CLOSE_TAG_REGEX)) {
                     if (!tagStack.empty() && tagStack.peek().matches(JsxBlockProvider.OPEN_TAG_REGEX)) {
@@ -59,6 +59,21 @@ object JsxBlockUtil {
                             myRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
                 }
                 myPos = rangeEnd
+            }
+        }
+    }
+    fun parseExportParenthesis(pos: LookaheadText.Position,
+                               bracketStack: Stack<CharSequence>){
+        val groups: MutableList<String> = mutableListOf()
+        val text = if (pos.offsetInCurrentLine >= 0) {pos.currentLineFromPosition} else {pos.currentLine}
+        Regex("\\{|\\}|\\(|\\)").findAll(text).iterator().forEach {
+            groups.add(it.groupValues[0])
+        }
+        for (group in groups) {
+            if (group == "{" || group == "(") {
+                bracketStack.push(group)
+            } else {
+                if (!bracketStack.empty()) {bracketStack.pop()}
             }
         }
     }

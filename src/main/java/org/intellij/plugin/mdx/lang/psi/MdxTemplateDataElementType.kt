@@ -1,6 +1,7 @@
 package org.intellij.plugin.mdx.lang.psi
 
 import com.intellij.lang.javascript.types.JEEmbeddedBlockElementType
+import com.intellij.lang.javascript.types.JSEmbeddedContentElementType
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.templateLanguages.TemplateDataElementType
@@ -8,8 +9,10 @@ import com.intellij.psi.templateLanguages.TemplateDataModifications
 import com.intellij.psi.tree.IElementType
 import com.intellij.psi.tree.TokenSet
 import org.intellij.plugin.mdx.lang.MdxLanguage
+import org.intellij.plugin.mdx.lang.parse.JsxBlockProvider
 import org.intellij.plugin.mdx.lang.parse.MdxTokenTypes
 import org.intellij.plugins.markdown.lang.MarkdownElementType
+import java.util.*
 import kotlin.math.min
 
 object MdxTemplateDataElementType : MdxTemplateDataElementTypeBase(),
@@ -22,10 +25,11 @@ object MdxTemplateDataElementType : MdxTemplateDataElementTypeBase(),
     }
 }
 
+
 open class MdxTemplateDataElementTypeBase : TemplateDataElementType("MDX_TEMPLATE_JSX",
         MdxLanguage,
         MarkdownElementType.platformType(MdxTokenTypes.JSX_BLOCK_CONTENT),
-        IElementType("OUTER_BLOCK", MdxLanguage)) {
+        MdxTokenTypes.OUTER_ELEMENT_TYPE) {
     var lastImportExportBlock = 0
     override fun collectTemplateModifications(sourceCode: CharSequence, baseLexer: Lexer): TemplateDataModifications {
         val modifications = TemplateDataModifications()

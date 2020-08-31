@@ -3,14 +3,21 @@ import com.intellij.codeInsight.template.impl.TemplateManagerImpl
 import com.intellij.codeInsight.template.impl.TemplateSettings
 import com.intellij.openapi.command.WriteCommandAction
 
-class MdxEmmetTest: MdxTestBase() {
+class MdxEmmetTest : MdxTestBase() {
     fun testTemplates() {
         doTest("a:link<caret>", "<a href=\"http://\"></a>")
     }
 
     fun testTagNameInference() {
-        doTest("ul>.item*3<caret>", """<ul><li></li><li></li><li></li></ul>""")
-        doTest("<ul>.item*3<caret></ul>", """<ul><li className="item"></li><li className="item"></li><li className="item"></li></ul>""")
+        doTest("ul>.item*3<caret>", """<ul>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>""")
+        doTest("<ul>.item*3<caret></ul>", """<ul>
+    <li className="item"></li>
+    <li className="item"></li>
+    <li className="item"></li></ul>""")
     }
 
     fun testDoubleBracket() {

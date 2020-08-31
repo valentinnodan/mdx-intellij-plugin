@@ -51,7 +51,10 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
         if (lang == XMLLanguage::class.java) {
             val psi = getPsi(MdxJSLanguage.INSTANCE)
             if (psi != null && DialectDetector.isJSX(psi)) {
-                val element = findElementAt(offset)!!
+                val element = findElementAt(offset)
+                if (element == null) {
+                 return element
+                }
                 if (isXmlElement(element)) {
                     return element
                 }
