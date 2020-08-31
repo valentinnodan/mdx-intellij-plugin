@@ -48,6 +48,10 @@
         <lang.formatter language="MDX" implementationClass="org.intellij.plugin.mdx.format.MdxFormattingModelBuilder"/>
         <lang.formatter language="MdxJS" implementationClass="org.intellij.plugin.mdx.format.MdxJsFormattingModelBuilder"/>
         <fileIndentOptionsProvider implementation="org.intellij.plugin.mdx.format.MdxFileIndentOptionsProvider"/>
+        <completion.contributor language="Markdown"
+                                id="MdxImportExportCompletionContributor"
+                                implementationClass="org.intellij.plugin.mdx.completion.MdxImportExportCompletionContributor"
+        />
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
