@@ -9,6 +9,7 @@ import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import java.lang.Integer.min
 import java.util.*
 
 class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
@@ -72,8 +73,13 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
 
             val nextLineOffset = pos.nextLineOrEofOffset
             realInterestingOffset = nextLineOffset
+            var currentLine: CharSequence
+            if (nextLineConstraints.getIndent() > pos.currentLine.length) {
+                currentLine = pos.currentLine.subSequence(0, pos.currentLine.length)
+            } else {
+                currentLine = pos.currentLine.subSequence(nextLineConstraints.getIndent(), pos.currentLine.length)
+            }
 
-            val currentLine = pos.currentLine.subSequence(nextLineConstraints.getIndent(), pos.currentLine.length)
             if (currentLine.isEmpty()) {
                 productionHolder.addProduction(listOf(SequentialParser.Node(
                         nextLineOffset - 1..nextLineOffset, MdxTokenTypes.JSX_BLOCK_CONTENT)))
