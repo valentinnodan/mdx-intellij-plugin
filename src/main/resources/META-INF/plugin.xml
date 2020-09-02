@@ -52,7 +52,6 @@
                                 id="MdxImportExportCompletionContributor"
                                 implementationClass="org.intellij.plugin.mdx.completion.MdxImportExportCompletionContributor"
         />
-<!--        <fileEditorProvider implementation="org.intellij.plugin.mdx.ui.preview.MdxSplitEditorProvider"/>-->
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript">
