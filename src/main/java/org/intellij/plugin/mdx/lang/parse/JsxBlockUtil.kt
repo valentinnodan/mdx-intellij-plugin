@@ -21,9 +21,9 @@ object JsxBlockUtil {
             groups.add(Pair(it.groupValues[0], it.range))
         }
         val delta = if (hasEnter) {
-            1 + constraints.getCharsEaten(text) + pos.offset
+            1 + pos.offset
         } else {
-            constraints.getCharsEaten(text) + pos.offset
+            pos.offset
         }
         var myPos = 0
         var nextGroupInd = 0
