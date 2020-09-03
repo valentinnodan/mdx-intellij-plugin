@@ -40,8 +40,8 @@ class MdxHtmlGetter {
         commandLine.environment["NODE_ENV"] = "development"
         val contents = PsiManagerImpl(project).findFile(virtualFile)!!.viewProvider.contents
         commandLine.workDirectory = File(project.basePath!!)
+        println(commandLine.workDirectory)
         commandLine.addParameter("-e")
-        var loader = "require('@mdx-js/mdx')"
         val targetPath = NodeInterpreterUtil.convertLocalPathToRemote(FileUtil.toSystemDependentName(""), interpreter)
         //language=JavaScript
         commandLine.addParameter("""
@@ -58,17 +58,24 @@ class MdxHtmlGetter {
       }
       
       const getHtml = () => {
-        const xml = transpile();
-        let t = babel.transform(xml, options, function(err, result) {
-          result.code;
-          result.map;
-          result.ast;
-        });
-        })
-        let func = new Function(t.code);
-        func();
-        const htmlString = ReactDOMServer.renderToStaticMarkup(MDXContent)
-        return htmlString
+        let jsxWithExportDefault = transpile();
+        const jsx = jsxWithExportDefault
+        .replace(/export default /, 'const exportedMdxElement = ')
+        const result = babel.transform(jsx, {
+        presets: [
+                    ['@babel/preset-react'], 
+                    ['@babel/preset-env',
+                        {
+                            corejs: '3.3.5',
+                            useBuiltIns: 'entry'
+                        },
+                    ]
+                    ]});
+        let functionCode = "{\n" + result.code + "\nreturn exportedMdxElement;}"
+        const func = new Function(functionCode)
+        const elem = func()
+        const htmlString = functionCode
+        return functionCode
       }
       console.log(getHtml())
       """.trimIndent())
