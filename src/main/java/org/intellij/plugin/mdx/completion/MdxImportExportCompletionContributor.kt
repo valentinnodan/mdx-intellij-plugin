@@ -22,8 +22,8 @@ class MdxImportExportCompletionContributor : CompletionContributor() {
                 if (nodeParent.psi.containingFile is MdxFile) {
                     if (nodeParent.elementType == MarkdownElementTypes.PARAGRAPH &&
                             (nodeParent.firstChildNode == node || nodeParent.text.trim().startsWith(node.text))) {
-                        result.addElement(LookupElementBuilder.create("export").bold())
-                        result.addElement(LookupElementBuilder.create("import").bold())
+                        result.addElement(LookupElementBuilder.create("export ").bold())
+                        result.addElement(LookupElementBuilder.create("import ").bold())
                     }
                 }
             }
