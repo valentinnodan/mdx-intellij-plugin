@@ -24,60 +24,61 @@ import org.intellij.plugin.mdx.lang.psi.MdxFile
 import java.io.File
 
 class MdxHtmlGetter {
-    companion object {
-        internal const val version = 5
-    }
-
     private val MARKER = "!!!${ApplicationNamesInfo.getInstance().fullProductName} webpack loader!!!"
 
-    //    internal val notifier = WebPackNotifier()
     internal val logger: Logger = Logger.getInstance("#org.intellij.plugin.mdx.ui.preview.WebPackExecutor")
 
     private fun run(project: Project, interpreter: NodeJsInterpreter, virtualFile: VirtualFile): ProcessOutput? {
+        virtualFile.contentsToByteArray()
         val commandLine = GeneralCommandLine()
         commandLine.withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
         commandLine.withCharset(Charsets.UTF_8)
         commandLine.environment["NODE_ENV"] = "development"
-        val contents = PsiManagerImpl(project).findFile(virtualFile)!!.viewProvider.contents
+        val contents = String(virtualFile.contentsToByteArray())
         commandLine.workDirectory = File(project.basePath!!)
-        println(commandLine.workDirectory)
         commandLine.addParameter("-e")
         val targetPath = NodeInterpreterUtil.convertLocalPathToRemote(FileUtil.toSystemDependentName(""), interpreter)
         //language=JavaScript
         commandLine.addParameter("""
       require.main = { require: require };
-      var mdx = require('@mdx-js/mdx');
+      var mdxI = require('@mdx-js/mdx');
+      var m = require('@mdx-js/react');
       var ReactDOMServer = require('react-dom/server');
       var babel = require("@babel/core");
-      
+
       const content = `$contents`
 
       const transpile = () => {
-        const jsx = mdx.sync(content)
-        return jsx
+        return mdxI.sync(content)
       }
-      
-      const getHtml = () => {
+
+      const getHtml = async () => {
         let jsxWithExportDefault = transpile();
         const jsx = jsxWithExportDefault
-        .replace(/export default /, 'const exportedMdxElement = ')
+        .replace(/export default /, 'const MDXContent = ')
         const result = babel.transform(jsx, {
         presets: [
-                    ['@babel/preset-react'], 
+                    ['@babel/preset-react'],
                     ['@babel/preset-env',
                         {
                             corejs: '3.3.5',
-                            useBuiltIns: 'entry'
-                        },
+                            useBuiltIns: 'entry',
+                            modules: 'auto',
+                            targets: {
+                                      node: "current"
+                                     }
+                        }
                     ]
                     ]});
-        let functionCode = "{\n" + result.code + "\nreturn exportedMdxElement;}"
-        const func = new Function(functionCode)
-        const elem = func()
-        const htmlString = functionCode
-        return functionCode
+
+        var AsyncFunction = Object.getPrototypeOf(async function(){}).constructor
+
+        const functionCode = "{\n" + result.code + "\nvar MDX_content_res = await MDXContent({'components': {}})\n return MDX_content_res;}"
+        const func = new AsyncFunction('mdx', functionCode)
+        const elem = await func(m.mdx)
+        return ReactDOMServer.renderToString(elem)
       }
-      console.log(getHtml())
+      (getHtml()).then(console.log)
       """.trimIndent())
         NodeCommandLineConfigurator.find(interpreter).configure(commandLine, NodeCommandLineConfigurator.defaultOptions(project))
         return NodeCommandLineUtil.execute(commandLine, Registry.intValue("webpack.execution.timeout.ms", 10000).toLong())
@@ -86,12 +87,10 @@ class MdxHtmlGetter {
 
     private fun getInterpreter(project: Project): NodeJsInterpreter? {
         val interpreter = NodeJsInterpreterManager.getInstance(project).interpreter
-        println(interpreter)
         return if (interpreter != null && interpreter.validate(project) == null) interpreter else null
     }
 
     fun loadHtml(project: Project, file: VirtualFile): String {
-        println(file.fileType)
         if (file.fileType !== MdxFileType.INSTANCE) {
             return ""
         }

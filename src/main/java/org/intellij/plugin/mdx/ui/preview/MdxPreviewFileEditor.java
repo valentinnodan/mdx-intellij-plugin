@@ -12,6 +12,7 @@ import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.fileEditor.impl.EditorHistoryManager;
+import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Disposer;
@@ -325,7 +326,6 @@ public class MdxPreviewFileEditor extends MarkdownPreviewFileEditor {
         if (!myFile.isValid() || myDocument == null || Disposer.isDisposed(this)) {
             return;
         }
-
         final String html = new MdxHtmlGetter().loadHtml(myProject, myFile);
 
         // EA-75860: The lines to the top may be processed slowly; Since we're in pooled thread, we can be disposed already.
@@ -334,6 +334,7 @@ public class MdxPreviewFileEditor extends MarkdownPreviewFileEditor {
         }
 
         synchronized (REQUESTS_LOCK) {
+
             if (myLastHtmlOrRefreshRequest != null) {
                 mySwingAlarm.cancelRequest(myLastHtmlOrRefreshRequest);
             }
