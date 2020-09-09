@@ -24,20 +24,15 @@ import org.intellij.plugin.mdx.lang.psi.MdxFile
 import java.io.File
 
 class MdxHtmlGetter {
-    private val MARKER = "!!!${ApplicationNamesInfo.getInstance().fullProductName} webpack loader!!!"
-
     internal val logger: Logger = Logger.getInstance("#org.intellij.plugin.mdx.ui.preview.WebPackExecutor")
 
-    private fun run(project: Project, interpreter: NodeJsInterpreter, virtualFile: VirtualFile): ProcessOutput? {
-        virtualFile.contentsToByteArray()
+    private fun run(project: Project, interpreter: NodeJsInterpreter, virtualFile: VirtualFile, contents: String): ProcessOutput? {
         val commandLine = GeneralCommandLine()
         commandLine.withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
         commandLine.withCharset(Charsets.UTF_8)
         commandLine.environment["NODE_ENV"] = "development"
-        val contents = String(virtualFile.contentsToByteArray())
-        commandLine.workDirectory = File(project.basePath!!)
+        commandLine.workDirectory = File(virtualFile.parent.path)
         commandLine.addParameter("-e")
-        val targetPath = NodeInterpreterUtil.convertLocalPathToRemote(FileUtil.toSystemDependentName(""), interpreter)
         //language=JavaScript
         commandLine.addParameter("""
       require.main = { require: require };
@@ -52,24 +47,28 @@ class MdxHtmlGetter {
         return mdxI.sync(content)
       }
 
+      const babelOptions = {
+        "presets": [
+          babel.createConfigItem([require("@babel/preset-env"), { exclude: ["transform-regenerator"] }]),
+          babel.createConfigItem(require("@babel/preset-react")),
+        ],
+        "plugins": [
+          babel.createConfigItem(require("@babel/plugin-proposal-export-default-from")),
+          // selected plugins from https://github.com/babel/babel/blob/master/packages/babel-preset-stage-2/README.md
+          babel.createConfigItem(require("@babel/plugin-proposal-export-namespace-from")),
+          babel.createConfigItem(require("@babel/plugin-proposal-class-properties")),
+          babel.createConfigItem(require("@babel/plugin-proposal-optional-chaining")),
+          babel.createConfigItem(require("@babel/plugin-proposal-nullish-coalescing-operator")),
+          babel.createConfigItem(require("@babel/plugin-syntax-dynamic-import")),
+          babel.createConfigItem(require("babel-plugin-transform-dynamic-import")),
+        ]
+      };
+
       const getHtml = async () => {
         let jsxWithExportDefault = transpile();
         const jsx = jsxWithExportDefault
         .replace(/export default /, 'const MDXContent = ')
-        const result = babel.transform(jsx, {
-        presets: [
-                    ['@babel/preset-react'],
-                    ['@babel/preset-env',
-                        {
-                            corejs: '3.3.5',
-                            useBuiltIns: 'entry',
-                            modules: 'auto',
-                            targets: {
-                                      node: "current"
-                                     }
-                        }
-                    ]
-                    ]});
+        const result = babel.transform(jsx, babelOptions);
 
         var AsyncFunction = Object.getPrototypeOf(async function(){}).constructor
 
@@ -77,11 +76,12 @@ class MdxHtmlGetter {
         const func = new AsyncFunction('mdx', functionCode)
         const elem = await func(m.mdx)
         return ReactDOMServer.renderToString(elem)
+//        return functionCode 
       }
       (getHtml()).then(console.log)
       """.trimIndent())
         NodeCommandLineConfigurator.find(interpreter).configure(commandLine, NodeCommandLineConfigurator.defaultOptions(project))
-        return NodeCommandLineUtil.execute(commandLine, Registry.intValue("webpack.execution.timeout.ms", 10000).toLong())
+        return NodeCommandLineUtil.execute(commandLine, Registry.intValue("mdx.execution.timeout.ms", 10000).toLong())
     }
 
 
@@ -90,25 +90,22 @@ class MdxHtmlGetter {
         return if (interpreter != null && interpreter.validate(project) == null) interpreter else null
     }
 
-    fun loadHtml(project: Project, file: VirtualFile): String {
+    fun loadHtml(project: Project, file: VirtualFile, contents: String): String {
         if (file.fileType !== MdxFileType.INSTANCE) {
             return ""
         }
         val interpreter = getInterpreter(project) ?: return ""
-        val run = run(project, interpreter, file)
+        val run = run(project, interpreter, file, contents)
         if (run != null && run.exitCode == 0) {
             val stdOut = run.stdout.trim()
-            val lastNewLine = stdOut.lastIndexOf(MARKER)
-            val result = if (lastNewLine >= 0) stdOut.substring(lastNewLine + MARKER.length + 1) else stdOut
-            println("HERE SHOULD BE STD")
-            println(stdOut)
-            println("_______________________________")
+            if (run.stderr != "") {
+                println(run.stderr)
+            }
             return stdOut
         } else if (run != null) {
-            println("NULL")
             logger.warn("failed to evaluate mdx. exit code: ${run.exitCode}${if (run.isTimeout) ", timed out" else ""}\n" +
                     "stdout: ${run.stdout}\nstderr: ${run.stderr}")
-//            errorNotify(project, configPath, run.stderr)
+//            errorNotify(project, run.stderr)
         }
         return ""
     }

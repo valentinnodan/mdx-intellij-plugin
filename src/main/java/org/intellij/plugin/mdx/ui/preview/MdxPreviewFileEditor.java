@@ -116,12 +116,12 @@ public class MdxPreviewFileEditor extends MarkdownPreviewFileEditor {
 
     public MdxPreviewFileEditor(@NotNull Project project, @NotNull VirtualFile file) {
         super(project, file);
-        myProject = project;
-        myFile = file;
-        myDocument = FileDocumentManager.getInstance().getDocument(myFile);
+        this.myProject = project;
+        this.myFile = file;
+        this.myDocument = FileDocumentManager.getInstance().getDocument(myFile);
 
-        if (myDocument != null) {
-            myDocument.addDocumentListener(new DocumentListener() {
+        if (this.myDocument != null) {
+            this.myDocument.addDocumentListener(new DocumentListener() {
 
                 @Override
                 public void beforeDocumentChange(@NotNull DocumentEvent e) {
@@ -326,7 +326,7 @@ public class MdxPreviewFileEditor extends MarkdownPreviewFileEditor {
         if (!myFile.isValid() || myDocument == null || Disposer.isDisposed(this)) {
             return;
         }
-        final String html = new MdxHtmlGetter().loadHtml(myProject, myFile);
+        final String html = new MdxHtmlGetter().loadHtml(myProject, myFile, myDocument.getText());
 
         // EA-75860: The lines to the top may be processed slowly; Since we're in pooled thread, we can be disposed already.
         if (!myFile.isValid() || Disposer.isDisposed(this)) {
