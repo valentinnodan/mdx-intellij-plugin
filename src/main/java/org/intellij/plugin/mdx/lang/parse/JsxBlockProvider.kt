@@ -26,8 +26,12 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
             }
             JsxBlockUtil.parseParenthesis(pos, myStack, productionHolder, MarkdownConstraints.BASE, false)
             if (INLINE_REGEX.find(pos.currentLineFromPosition) == null) {
+                var endOfRange = pos.nextLineOrEofOffset
+                if (!pos.nextLine.isNullOrBlank()) {
+                    endOfRange++
+                }
                 productionHolder.addProduction(listOf(SequentialParser.Node(
-                        pos.offset..pos.nextLineOrEofOffset, MdxTokenTypes.JSX_BLOCK_CONTENT)))
+                        pos.offset..endOfRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
             }
             return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, OPEN_CLOSE_REGEXES[matchingGroup].second, false, myStack))
         }
@@ -81,11 +85,11 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val EXPORT_KEYWORD = "(^|\\s+)export($|\\s+)"
 
-        val TAG_NAME = "[a-zA-Z][a-zA-Z0-9-]*"
+        val TAG_NAME = "[a-zA-Z][a-zA-Z0-9.-]*"
 
         val ATTR_NAME = "[A-Za-z:_][A-Za-z0-9_.:-]*"
 
-        val ATTR_VALUE = "\\s*=\\s*(?:[^=<>`]+|'[^']*'|\"[^\"]*\")"
+        val ATTR_VALUE = "\\s*=\\s*(?:[^=<>`]+|\\{.*\\}|'[^']*'|\"[^\"]*\")"
 
         val ATTRIBUTE = "\\s+$ATTR_NAME(?:$ATTR_VALUE)?"
 
