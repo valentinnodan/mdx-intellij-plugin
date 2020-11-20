@@ -19,8 +19,8 @@ class MdxJsBlockContext(topSettings: CodeStyleSettings,
 
 
     override fun createSpacingStrategy(node: ASTNode): JSSpacingStrategy {
-        return JSSpacingStrategy(myDialectSettings, commonSettings,
-                BiFunction { child1: ASTNode, child2: ASTNode -> createMdxSpacingProcessor(node, child1, child2).calcSpacing() })
+        return JSSpacingStrategy(myDialectSettings, commonSettings
+        ) { child1: ASTNode, child2: ASTNode -> createMdxSpacingProcessor(node, child1, child2).calcSpacing() }
     }
 
     private fun createMdxSpacingProcessor(node: ASTNode, child1: ASTNode, child2: ASTNode): JSSpacingProcessor {

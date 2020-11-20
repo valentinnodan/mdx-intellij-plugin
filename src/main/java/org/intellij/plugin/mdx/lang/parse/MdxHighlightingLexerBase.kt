@@ -41,28 +41,34 @@ private object MdxProcessFactory : MarkerProcessorFactory {
     }
 }
 
-private class MdxMarkerProcessor(productionHolder: ProductionHolder,
-                                 constraints: MarkdownConstraints) :
-        CommonMarkMarkerProcessor(productionHolder, constraints) {
+private class MdxMarkerProcessor(
+    productionHolder: ProductionHolder,
+    constraints: MarkdownConstraints
+) :
+    CommonMarkMarkerProcessor(productionHolder, constraints) {
 
 
     private val markerBlockProviders =
-            listOf(
-                    CodeBlockProvider(),
-                    HorizontalRuleProvider(),
-                    CodeFenceProvider(),
-                    SetextHeaderProvider(),
-                    BlockQuoteProvider(),
-                    ListMarkerProvider(),
-                    JsxBlockProvider(),
-                    GitHubTableMarkerProvider(),
-                    AtxHeaderProvider(false),
-                    CommentAwareLinkReferenceDefinitionProvider()
-            )
+        listOf(
+            CodeBlockProvider(),
+            HorizontalRuleProvider(),
+            CodeFenceProvider(),
+            
+            SetextHeaderProvider(),
+            BlockQuoteProvider(),
+            ListMarkerProvider(),
+            JsxBlockProvider(),
+            HtmlBlockProvider(),
+            GitHubTableMarkerProvider(),
+            AtxHeaderProvider(false),
+            CommentAwareLinkReferenceDefinitionProvider()
+        )
 
-    override fun populateConstraintsTokens(pos: LookaheadText.Position,
-                                           constraints: MarkdownConstraints,
-                                           productionHolder: ProductionHolder) {
+    override fun populateConstraintsTokens(
+        pos: LookaheadText.Position,
+        constraints: MarkdownConstraints,
+        productionHolder: ProductionHolder
+    ) {
         if (constraints !is GFMConstraints || !constraints.hasCheckbox()) {
             super.populateConstraintsTokens(pos, constraints, productionHolder)
             return
@@ -87,13 +93,17 @@ private class MdxMarkerProcessor(productionHolder: ProductionHolder,
                 MarkdownTokenTypes.LIST_BULLET
         }
         val middleOffset = pos.offset - pos.offsetInCurrentLine + offset
-        val endOffset = Math.min(pos.offset - pos.offsetInCurrentLine + constraints.getCharsEaten(pos.currentLine),
-                pos.nextLineOrEofOffset)
+        val endOffset = Math.min(
+            pos.offset - pos.offsetInCurrentLine + constraints.getCharsEaten(pos.currentLine),
+            pos.nextLineOrEofOffset
+        )
 
-        productionHolder.addProduction(listOf(
+        productionHolder.addProduction(
+            listOf(
                 SequentialParser.Node(pos.offset..middleOffset, type),
                 SequentialParser.Node(middleOffset..endOffset, GFMTokenTypes.CHECK_BOX)
-        ))
+            )
+        )
     }
 
     override fun getMarkerBlockProviders(): List<MarkerBlockProvider<StateInfo>> {

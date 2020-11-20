@@ -1,3 +1,4 @@
+import com.intellij.lang.javascript.inspections.JSUnresolvedReactComponentInspection
 import com.intellij.lang.javascript.inspections.JSUnresolvedVariableInspection
 import com.intellij.lang.javascript.modules.TypeScriptCheckImportInspection
 import com.intellij.lang.typescript.inspections.TypeScriptUnresolvedFunctionInspection
@@ -7,8 +8,9 @@ import org.intellij.plugin.mdx.lang.MdxFileType
 
 class MdxHighlightTest : MdxTestBase() {
     fun testJsxSimple() {
-        doTestHighlighting("<Button>Press the button</Button>")
+        doTestHighlighting("<<weak_warning>Button</weak_warning>>Press the button</Button>")
     }
+
     fun testUnresolvedVariable() {
         val text = """import {h} from 'hello.mdx'
         
@@ -17,16 +19,35 @@ class MdxHighlightTest : MdxTestBase() {
         doTestHighlighting(text)
     }
 
+    fun testComment() {
+        doTestHighlighting(
+            """
+                <!--
+                <Unknown>{`
+                  .subheading {sad
+                    --mediumdark: '#999999';
+                    font-we1ight: 900;
+                    font-size: 13px;ads
+                  }
+                `}</Unknown>
+                -->
+            """.trimIndent()
+        )
+    }
+
     fun doTestHighlighting(text: String) {
-        myFixture.enableInspections(TypeScriptCheckImportInspection(),
-                TypeScriptValidateTypesInspection(),
-                TypeScriptUnresolvedVariableInspection(),
-                TypeScriptUnresolvedFunctionInspection(),
-                JSUnresolvedVariableInspection())
+        myFixture.enableInspections(
+            TypeScriptCheckImportInspection(),
+            TypeScriptValidateTypesInspection(),
+            JSUnresolvedReactComponentInspection(),
+            TypeScriptUnresolvedVariableInspection(),
+            TypeScriptUnresolvedFunctionInspection(),
+            JSUnresolvedVariableInspection()
+        )
 
         myFixture.configureByText(
-                "foo.mdx",
-                text
+            "foo.mdx",
+            text
         )
 
         myFixture.testHighlighting()
