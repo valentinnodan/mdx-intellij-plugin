@@ -25,7 +25,7 @@ class MdxHighlightTest : MdxTestBase() {
                 JSUnresolvedVariableInspection())
 
         myFixture.configureByText(
-                MdxFileType.INSTANCE,
+                "foo.mdx",
                 text
         )
 

@@ -2,6 +2,7 @@
     <id>mdx.js</id>
     <name>MDX</name>
     <vendor>JetBrains</vendor>
+    <idea-version since-build="203.5981" until-build="203.*" />
 
     <description><![CDATA[
 <p>Provides support for <a href="https://mdxjs.com/">MDX</a>, a language that blends Markdown and JSX syntax.</p>

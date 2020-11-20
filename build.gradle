@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.jetbrains.webstorm'
-version '1.0.2-SNAPSHOT'
+version '1.1'
 
 repositories {
     mavenCentral()
@@ -25,7 +25,7 @@ compileTestKotlin {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "IU-2020.2"
+    version = "IU-LATEST-EAP-SNAPSHOT"
     plugins = ['JavaScriptLanguage', "org.intellij.plugins.markdown:${markdownPluginVersion}", "platform-images"]
 }
 

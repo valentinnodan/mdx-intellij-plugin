@@ -1,10 +1,5 @@
-import com.intellij.codeInspection.htmlInspections.HtmlUnknownAttributeInspection
-import com.intellij.codeInspection.htmlInspections.HtmlUnknownBooleanAttributeInspection
-import com.intellij.codeInspection.htmlInspections.HtmlUnknownTagInspection
 import com.intellij.lang.javascript.dialects.ECMA6ParserDefinition
 import com.intellij.testFramework.ParsingTestCase
-import com.sixrr.inspectjs.validity.BadExpressionStatementJSInspection
-import com.sixrr.inspectjs.validity.ThisExpressionReferencesGlobalObjectJSInspection
 import org.intellij.plugin.mdx.js.MdxJSParserDefinition
 import org.intellij.plugin.mdx.lang.parse.MdxParserDefinition
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserDefinition
