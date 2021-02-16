@@ -26,8 +26,9 @@ class MdxEmmetTest : MdxTestBase() {
 
     private fun doTest(input: String, expectedOutput: String) {
         myFixture.configureByText("a.mdx", input)
-        TemplateManagerImpl.setTemplateTesting(getTestRootDisposable())
-        WriteCommandAction.runWriteCommandAction(myFixture.getProject()) { TemplateManager.getInstance(myFixture.getProject()).startTemplate(myFixture.getEditor(), TemplateSettings.TAB_CHAR) }
+        TemplateManagerImpl.setTemplateTesting(testRootDisposable)
+        WriteCommandAction.runWriteCommandAction(myFixture.project) { TemplateManager.getInstance(myFixture.project)
+            .startTemplate(myFixture.editor, TemplateSettings.TAB_CHAR) }
         myFixture.checkResult(expectedOutput)
     }
 }

@@ -29,7 +29,7 @@ class MdxParserDefinition : MarkdownParserDefinition() {
         return MarkdownParserAdapter(MdxFlavourDescriptor)
     }
 
-    override fun createFile(viewProvider: FileViewProvider?): PsiFile {
+    override fun createFile(viewProvider: FileViewProvider): PsiFile {
         return MdxFile(viewProvider)
     }
 
