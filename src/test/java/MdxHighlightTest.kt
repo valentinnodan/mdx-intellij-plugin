@@ -18,6 +18,24 @@ class MdxHighlightTest : MdxTestBase() {
         """.trimMargin()
         doTestHighlighting(text)
     }
+    
+    fun testParsingError() {
+        val text = """
+            * <<weak_warning>DocLink1</weak_warning> />
+            * <<weak_warning>DocLink2</weak_warning> />
+        """.trimIndent()
+        
+        doTestHighlighting(text)
+    }
+
+    fun testParsingErrorOneLine() {
+        val text = """
+            * <<weak_warning>DocLink</weak_warning> />
+        """.trimIndent()
+
+        doTestHighlighting(text)
+    }
+
 
     fun testComment() {
         doTestHighlighting(

@@ -26,10 +26,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
             }
             JsxBlockUtil.parseParenthesis(pos, myStack, productionHolder, MarkdownConstraints.BASE, false)
             if (INLINE_REGEX.find(pos.currentLineFromPosition) == null) {
-                var endOfRange = pos.nextLineOrEofOffset
-                if (!pos.nextLine.isNullOrBlank()) {
-                    endOfRange++
-                }
+                val endOfRange = pos.nextLineOrEofOffset
                 productionHolder.addProduction(listOf(SequentialParser.Node(
                         pos.offset..endOfRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
             }
@@ -56,7 +53,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
             if (FIND_START_IMPORT_EXPORT.matches(text.substring(offset))) {
                 return IMPORT_EXPORT_CONST
             }
-            return -1;
+            return -1
         }
         val matchResult = FIND_START_REGEX.find(text.substring(offset))
                 ?: return -1

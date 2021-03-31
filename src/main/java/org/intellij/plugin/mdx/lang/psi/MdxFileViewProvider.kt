@@ -22,9 +22,7 @@ class MdxFileViewProvider(manager: PsiManager, virtualFile: VirtualFile, eventSy
 
     override fun createFile(lang: Language): PsiFile? {
         if (lang === MdxLanguage) {
-            return super.createFile(lang)?.apply {
-                putUserData(MarkdownParserManager.FLAVOUR_DESCRIPTION, MdxFlavourDescriptor)
-            }
+            return super.createFile(lang)
         }
 
         val parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(lang) ?: return null
