@@ -5,9 +5,9 @@ import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
+import org.intellij.plugin.mdx.lang.parse.JsxBlockProvider.Companion.ATTRIBUTES_REGEX
 import org.intellij.plugin.mdx.lang.parse.JsxBlockProvider.Companion.TAG_REGEX
 import java.util.*
-import kotlin.collections.ArrayList
 
 object JsxBlockUtil {
     fun parseParenthesis(pos: LookaheadText.Position,
@@ -17,8 +17,12 @@ object JsxBlockUtil {
                          hasEnter: Boolean) {
         val groups: MutableList<Pair<String, IntRange>> = mutableListOf()
         val text = if (pos.offsetInCurrentLine >= 0) {pos.currentLineFromPosition} else {pos.currentLine}
-        TAG_REGEX.findAll(text).iterator().forEach {
-            groups.add(Pair(it.groupValues[0], it.range))
+        
+        //only if it isn't an attribute
+        if (!ATTRIBUTES_REGEX.matches(text)) {
+            TAG_REGEX.findAll(text).iterator().forEach {
+                groups.add(Pair(it.groupValues[0], it.range))
+            }
         }
         val delta = if (hasEnter) {
             1 + pos.offset

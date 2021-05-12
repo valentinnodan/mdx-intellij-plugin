@@ -105,6 +105,8 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
 
         val OPEN_TAG_REGEX = Regex("$OPEN_TAG|<$TAG_NAME[^>]*$")
         
+        val ATTRIBUTES_REGEX = Regex("^($ATTRIBUTE)+")
+        
         /** see {@link http://spec.commonmark.org/0.21/#html-blocks}
          *
          * nulls mean "Next line should be blank"

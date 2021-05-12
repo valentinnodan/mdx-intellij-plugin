@@ -85,4 +85,49 @@ class MdxHighlightTest : MdxTestBase() {
             """.trimIndent()
         )
     }
+    
+    
+    fun testOpenCloseTagInAttribute() {
+        doTestHighlighting(
+            """
+               
+                <<weak_warning>CodeTabs</weak_warning>
+                    tregx={`<>`}
+                    />
+
+                Of course, `first()` callback will asd qwe
+
+                :::note
+            """.trimIndent()
+        )
+    }
+    
+    fun testOpenCloseTagIn2Attribute() {
+        doTestHighlighting(
+            """
+                
+                <<weak_warning>CodeTabs</weak_warning>
+                    tregx={`<>`} tregx={`<>`}
+                    />
+
+                Of course, `first()` callback will asd qwe
+
+                :::note
+            """.trimIndent()
+        )
+    }
+    
+    fun testOpenCloseTagIn2AttributeSameLine() {
+        doTestHighlighting(
+            """
+                
+                <<weak_warning>CodeTabs</weak_warning>
+                    tregx={`<>`} tregx={`<>`}/>
+
+                Of course, `first()` callback will asd qwe
+
+                :::note
+            """.trimIndent()
+        )
+    }
 }
