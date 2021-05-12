@@ -4,9 +4,27 @@ import com.intellij.lang.javascript.modules.TypeScriptCheckImportInspection
 import com.intellij.lang.typescript.inspections.TypeScriptUnresolvedFunctionInspection
 import com.intellij.lang.typescript.inspections.TypeScriptUnresolvedVariableInspection
 import com.intellij.lang.typescript.inspections.TypeScriptValidateTypesInspection
-import org.intellij.plugin.mdx.lang.MdxFileType
 
 class MdxHighlightTest : MdxTestBase() {
+    private fun doTestHighlighting(text: String) {
+        myFixture.enableInspections(
+            TypeScriptCheckImportInspection(),
+            TypeScriptValidateTypesInspection(),
+            JSUnresolvedReactComponentInspection(),
+            TypeScriptUnresolvedVariableInspection(),
+            TypeScriptUnresolvedFunctionInspection(),
+            JSUnresolvedVariableInspection()
+        )
+
+        myFixture.configureByText(
+            "foo.mdx",
+            text
+        )
+
+        myFixture.testHighlighting()
+    }
+
+
     fun testJsxSimple() {
         doTestHighlighting("<<weak_warning>Button</weak_warning>>Press the button</Button>")
     }
@@ -52,22 +70,19 @@ class MdxHighlightTest : MdxTestBase() {
             """.trimIndent()
         )
     }
+    
+    fun testOpenTagInAttribute() {
+        doTestHighlighting(
+            """
+                
+                <<weak_warning>CodeTabs</weak_warning>
+                    tregx={``}
+                    php={`<`}/>
 
-    fun doTestHighlighting(text: String) {
-        myFixture.enableInspections(
-            TypeScriptCheckImportInspection(),
-            TypeScriptValidateTypesInspection(),
-            JSUnresolvedReactComponentInspection(),
-            TypeScriptUnresolvedVariableInspection(),
-            TypeScriptUnresolvedFunctionInspection(),
-            JSUnresolvedVariableInspection()
+                Of course, `first()` callback will asd qwe
+
+                :::note
+            """.trimIndent()
         )
-
-        myFixture.configureByText(
-            "foo.mdx",
-            text
-        )
-
-        myFixture.testHighlighting()
     }
 }
