@@ -98,14 +98,13 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
          * Closing tag allowance is not in public spec version yet
          */
         val CLOSE_TAG = "</$TAG_NAME\\s*>|</>"
-
-        val TAG_REGEX = Regex("$OPEN_TAG|$CLOSE_TAG|$EMPTY_TAG|<$TAG_NAME[^>]*$|^[^<]*/>")
+        
+        val CLOSE_TAG_REGEX = Regex("$CLOSE_TAG|^($ATTRIBUTE|[^<])*/>")
+        
+        val TAG_REGEX = Regex("$OPEN_TAG|$EMPTY_TAG|<$TAG_NAME[^>]*$|$CLOSE_TAG_REGEX")
 
         val OPEN_TAG_REGEX = Regex("$OPEN_TAG|<$TAG_NAME[^>]*$")
-
-        val CLOSE_TAG_REGEX = Regex("$CLOSE_TAG|^[^<]*/>")
-
-
+        
         /** see {@link http://spec.commonmark.org/0.21/#html-blocks}
          *
          * nulls mean "Next line should be blank"
