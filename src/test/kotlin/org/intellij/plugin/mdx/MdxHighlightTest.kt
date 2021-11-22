@@ -1,9 +1,12 @@
+package org.intellij.plugin.mdx
+
 import com.intellij.lang.javascript.inspections.JSUnresolvedReactComponentInspection
 import com.intellij.lang.javascript.inspections.JSUnresolvedVariableInspection
 import com.intellij.lang.javascript.modules.TypeScriptCheckImportInspection
 import com.intellij.lang.typescript.inspections.TypeScriptUnresolvedFunctionInspection
 import com.intellij.lang.typescript.inspections.TypeScriptUnresolvedVariableInspection
 import com.intellij.lang.typescript.inspections.TypeScriptValidateTypesInspection
+import org.junit.Test
 
 class MdxHighlightTest : MdxTestBase() {
     private fun doTestHighlighting(text: String) {
@@ -25,10 +28,12 @@ class MdxHighlightTest : MdxTestBase() {
     }
 
 
+    @Test
     fun testJsxSimple() {
         doTestHighlighting("<<weak_warning>Button</weak_warning>>Press the button</Button>")
     }
 
+    @Test
     fun testUnresolvedVariable() {
         val text = """import {h} from 'hello.mdx'
         
@@ -36,7 +41,8 @@ class MdxHighlightTest : MdxTestBase() {
         """.trimMargin()
         doTestHighlighting(text)
     }
-    
+
+    @Test
     fun testParsingError() {
         val text = """
             * <<weak_warning>DocLink1</weak_warning> />
@@ -46,6 +52,7 @@ class MdxHighlightTest : MdxTestBase() {
         doTestHighlighting(text)
     }
 
+    @Test
     fun testParsingErrorOneLine() {
         val text = """
             * <<weak_warning>DocLink</weak_warning> />
@@ -54,7 +61,7 @@ class MdxHighlightTest : MdxTestBase() {
         doTestHighlighting(text)
     }
 
-
+    @Test
     fun testComment() {
         doTestHighlighting(
             """
@@ -70,7 +77,8 @@ class MdxHighlightTest : MdxTestBase() {
             """.trimIndent()
         )
     }
-    
+
+    @Test
     fun testOpenTagInAttribute() {
         doTestHighlighting(
             """
@@ -85,8 +93,8 @@ class MdxHighlightTest : MdxTestBase() {
             """.trimIndent()
         )
     }
-    
-    
+
+    @Test
     fun testOpenCloseTagInAttribute() {
         doTestHighlighting(
             """
@@ -101,7 +109,8 @@ class MdxHighlightTest : MdxTestBase() {
             """.trimIndent()
         )
     }
-    
+
+    @Test
     fun testOpenCloseTagIn2Attribute() {
         doTestHighlighting(
             """
@@ -116,7 +125,8 @@ class MdxHighlightTest : MdxTestBase() {
             """.trimIndent()
         )
     }
-    
+
+    @Test
     fun testOpenCloseTagIn2AttributeSameLine() {
         doTestHighlighting(
             """

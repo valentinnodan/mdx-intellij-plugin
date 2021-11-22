@@ -1,4 +1,7 @@
+package org.intellij.plugin.mdx
+
 import com.intellij.psi.formatter.FormatterTestCase
+import org.junit.Test
 
 class MdxFormatterTest: FormatterTestCase() {
     override fun getTestDataPath(): String = "src/test/testData"
@@ -9,5 +12,6 @@ class MdxFormatterTest: FormatterTestCase() {
         return super.getTestName(false)
     }
 
+    @Test
     fun testFormatting() = doTest()
 }

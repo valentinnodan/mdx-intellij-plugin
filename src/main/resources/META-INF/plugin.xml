@@ -2,8 +2,6 @@
     <id>mdx.js</id>
     <name>MDX</name>
     <vendor>JetBrains</vendor>
-    <idea-version since-build="211.0" until-build="211.*" />
-
     <description><![CDATA[
 <p>Provides support for <a href="https://mdxjs.com/">MDX</a>, a language that blends Markdown and JSX syntax.</p>
 <p>Includes the following features:</p>
@@ -45,7 +43,7 @@
         <lang.inspectionSuppressor language="MDX"
                                    implementationClass="org.intellij.plugin.mdx.codeInspection.MdxInspectionSuppressor"/>
         <xml.zenCodingGenerator implementation="org.intellij.plugin.mdx.js.MdxZenCodingGenerator"/>
-        <editorFactoryListener implementation="org.intellij.plugin.mdx.js.MdxTagNameSynchronizer$MyEditorFactoryListener"/>
+        <editorFactoryListener implementation="org.intellij.plugin.mdx.js.MdxEditorFactoryListener"/>
         <lang.formatter language="MDX" implementationClass="org.intellij.plugin.mdx.format.MdxFormattingModelBuilder"/>
         <lang.formatter language="MdxJS" implementationClass="org.intellij.plugin.mdx.format.MdxJsFormattingModelBuilder"/>
         <fileIndentOptionsProvider implementation="org.intellij.plugin.mdx.format.MdxFileIndentOptionsProvider"/>

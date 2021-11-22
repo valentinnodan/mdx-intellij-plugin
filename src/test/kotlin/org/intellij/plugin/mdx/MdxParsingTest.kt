@@ -1,3 +1,5 @@
+package org.intellij.plugin.mdx
+
 import com.intellij.lang.LanguageASTFactory
 import com.intellij.lang.javascript.JavascriptASTFactory
 import com.intellij.lang.javascript.JavascriptLanguage
@@ -14,6 +16,7 @@ import org.intellij.plugins.markdown.lang.MarkdownFileViewProviderFactory
 import org.intellij.plugins.markdown.lang.MarkdownLanguage
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserDefinition
 import org.intellij.plugins.markdown.lang.psi.MarkdownASTFactory
+import org.junit.Test
 
 class MdxParsingTest : ParsingTestCase(
     "",
@@ -49,26 +52,32 @@ class MdxParsingTest : ParsingTestCase(
         return true
     }
 
+    @Test
     fun testParsingTestData() {
         doTest(true)
     }
 
+    @Test
     fun testParsingList() {
         doTest(true)
     }
 
+    @Test
     fun testParsingWithNewLines() {
         doTest(true)
     }
 
+    @Test
     fun testParsingAlert() {
         doTest(true)
     }
 
+    @Test
     fun testParsingEmbedded() {
         doTest(true)
     }
 
+    @Test
     fun testParsingPrisma() {
         doTest(true)
     }

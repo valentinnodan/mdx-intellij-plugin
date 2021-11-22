@@ -84,7 +84,7 @@ public final class MdxTagNameSynchronizer implements EditorFactoryListener {
     private MdxTagNameSynchronizer() {
     }
 
-    private static void createSynchronizerFor(Editor editor) {
+    public static void createSynchronizerFor(Editor editor) {
         Project project = editor.getProject();
         if (project == null || !(editor instanceof EditorImpl)) {
             return;
@@ -136,13 +136,6 @@ public final class MdxTagNameSynchronizer implements EditorFactoryListener {
         }
         finally {
             document.putUserData(SKIP_COMMAND, null);
-        }
-    }
-
-    public static class MyEditorFactoryListener implements EditorFactoryListener {
-        @Override
-        public void editorCreated(@NotNull EditorFactoryEvent event) {
-            createSynchronizerFor(event.getEditor());
         }
     }
 

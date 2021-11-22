@@ -1,3 +1,2 @@
 rootProject.name = 'mdx-intellij-plugin'
-include 'kotlin'
 
