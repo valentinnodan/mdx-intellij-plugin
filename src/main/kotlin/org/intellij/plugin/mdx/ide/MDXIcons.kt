@@ -1,9 +1,7 @@
-package org.intellij.plugin.mdx.ide;
+package org.intellij.plugin.mdx.ide
 
-import com.intellij.openapi.util.IconLoader;
+import com.intellij.openapi.util.IconLoader
 
-import javax.swing.Icon;
-
-public class MDXIcons {
-    public static final Icon FILE = IconLoader.getIcon("/icons/mdx.svg");
+object MDXIcons {
+    val FILE = IconLoader.getIcon("/icons/mdx.svg", MDXIcons::class.java)
 }
