@@ -15,7 +15,7 @@ import org.intellij.plugin.mdx.lang.psi.MdxFileViewProviderFactory
 import org.intellij.plugins.markdown.lang.MarkdownFileViewProviderFactory
 import org.intellij.plugins.markdown.lang.MarkdownLanguage
 import org.intellij.plugins.markdown.lang.parser.MarkdownParserDefinition
-import org.intellij.plugins.markdown.lang.psi.MarkdownASTFactory
+import org.intellij.plugins.markdown.lang.psi.MarkdownAstFactory
 import org.junit.Test
 
 class MdxParsingTest : ParsingTestCase(
@@ -39,7 +39,7 @@ class MdxParsingTest : ParsingTestCase(
         super.setUp()
         addExplicitExtension(LanguageFileViewProviders.INSTANCE, MdxLanguage, MdxFileViewProviderFactory())
         addExplicitExtension(LanguageFileViewProviders.INSTANCE, MdxLanguage, MarkdownFileViewProviderFactory())
-        addExplicitExtension(LanguageASTFactory.INSTANCE, MarkdownLanguage.INSTANCE, MarkdownASTFactory())
+        addExplicitExtension(LanguageASTFactory.INSTANCE, MarkdownLanguage.INSTANCE, MarkdownAstFactory())
         addExplicitExtension(LanguageASTFactory.INSTANCE, JavascriptLanguage.INSTANCE, JavascriptASTFactory())
         addExplicitExtension(LanguageASTFactory.INSTANCE, XMLLanguage.INSTANCE, XmlASTFactory())
     }
