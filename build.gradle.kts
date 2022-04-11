@@ -2,14 +2,14 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.5.30"
+    id("org.jetbrains.kotlin.jvm") version "1.6.10"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.3.0"
+    id("org.jetbrains.intellij") version "1.5.2"
 }
 
-group "org.intellij.plugin.mdx"
+group = "org.intellij.plugin.mdx"
 
-val realVersion = "1.0.213"
+val realVersion = "1.0.221"
 version = realVersion
 
 repositories {
@@ -29,8 +29,8 @@ intellij {
 tasks {
 
     patchPluginXml {
-        sinceBuild.set("213.0")
-        untilBuild.set("213.*")
+        sinceBuild.set("221.5080")
+        untilBuild.set("221.*")
         version.set(realVersion)
     }
 

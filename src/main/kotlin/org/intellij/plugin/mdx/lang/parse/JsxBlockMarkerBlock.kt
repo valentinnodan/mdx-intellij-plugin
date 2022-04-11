@@ -4,7 +4,7 @@ import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
-import org.intellij.markdown.parser.constraints.MarkdownConstraints
+import org.intellij.markdown.parser.constraints.*
 import org.intellij.markdown.parser.markerblocks.MarkdownParserUtil
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
@@ -38,7 +38,7 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
             }
 
             val prevLine = pos.prevLine ?: return MarkerBlock.ProcessingResult.DEFAULT
-            if (!MarkdownConstraints.fillFromPrevious(pos, constraints).extendsPrev(constraints)) {
+            if (!constraints.applyToNextLine(pos).extendsPrev(constraints)) {
                 return MarkerBlock.ProcessingResult.DEFAULT
             }
 
@@ -66,7 +66,7 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
 
             assert(pos.char == '\n')
 
-            val nextLineConstraints = MarkdownConstraints.fromBase(pos, constraints)
+            val nextLineConstraints = constraints.applyToNextLineAndAddModifiers(pos)
             if (!nextLineConstraints.extendsPrev(constraints)) {
                 return MarkerBlock.ProcessingResult.DEFAULT
             }
@@ -74,10 +74,10 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
             val nextLineOffset = pos.nextLineOrEofOffset
             realInterestingOffset = nextLineOffset
             var currentLine: CharSequence
-            if (nextLineConstraints.getIndent() > pos.currentLine.length) {
+            if (nextLineConstraints.indent > pos.currentLine.length) {
                 currentLine = pos.currentLine.subSequence(0, pos.currentLine.length)
             } else {
-                currentLine = pos.currentLine.subSequence(nextLineConstraints.getIndent(), pos.currentLine.length)
+                currentLine = pos.currentLine.subSequence(nextLineConstraints.indent, pos.currentLine.length)
             }
 
             if (currentLine.isEmpty()) {
@@ -96,7 +96,7 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
                     if (!pos.nextLine.isNullOrEmpty()) {
                         endOfRange++
                     }
-                    val contentRange = (pos.offset + 1 + constraints.getIndent()).coerceAtMost(nextLineOffset)..endOfRange
+                    val contentRange = (pos.offset + 1 + constraints.indent).coerceAtMost(nextLineOffset)..endOfRange
                     if (contentRange.first < contentRange.last) {
                         JsxBlockUtil.parseExportParenthesis(pos, tagOrBracketStack!!)
                         productionHolder.addProduction(listOf(SequentialParser.Node(
@@ -108,7 +108,7 @@ class JsxBlockMarkerBlock(myConstraints: MarkdownConstraints,
                 if (!pos.nextLine.isNullOrEmpty()) {
                     endOfRange++
                 }
-                val contentRange = (pos.offset + 1 + constraints.getIndent()).coerceAtMost(nextLineOffset)..endOfRange
+                val contentRange = (pos.offset + 1 + constraints.indent).coerceAtMost(nextLineOffset)..endOfRange
                 if (contentRange.first < contentRange.last) {
                     JsxBlockUtil.parseExportParenthesis(pos, tagOrBracketStack!!)
                     productionHolder.addProduction(listOf(SequentialParser.Node(

@@ -3,6 +3,7 @@ package org.intellij.plugin.mdx.lang.parse
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.ProductionHolder
+import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
@@ -24,7 +25,7 @@ class JsxBlockProvider : MarkerBlockProvider<MarkerProcessor.StateInfo> {
                         pos.offset..endOfRange, MdxTokenTypes.JSX_BLOCK_CONTENT)))
                 return listOf(JsxBlockMarkerBlock(stateInfo.currentConstraints, productionHolder, END_REGEX, true, myStack))
             }
-            JsxBlockUtil.parseParenthesis(pos, myStack, productionHolder, MarkdownConstraints.BASE, false)
+            JsxBlockUtil.parseParenthesis(pos, myStack, productionHolder, CommonMarkdownConstraints.BASE, false)
             if (INLINE_REGEX.find(pos.currentLineFromPosition) == null) {
                 val endOfRange = pos.nextLineOrEofOffset
                 productionHolder.addProduction(listOf(SequentialParser.Node(
